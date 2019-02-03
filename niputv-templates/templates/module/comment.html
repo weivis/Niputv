@@ -1,0 +1,199 @@
+<div id="video_comment">
+
+    <style>
+        #video_comment{width: 100%;margin-top: 20px;}
+        .video_comment_send.login{width: 100%;height: 50px;background-color: #f1f1f1;border-radius: 5px;line-height: 50px;text-align: center;color: #0093ff;font-size: 14px;}
+        .video_comment_send.main{height: 45px;overflow: hidden;width: 100%}
+        .video_comment_send.l-head{float: left;height: 100%;width: 45px;}
+        .video_comment_send.l-head img{width: 100%}
+        .video_comment_send.r-input{float: right;height: calc(100% - 1px);width: calc(100% - 60px);border-bottom: 1px solid #cacaca;position: relative}
+        #comment_button{height: 33px;width: 100px;font-size: 14px;line-height: 33px;text-align: center;background-color: #00a0e9;color: #fff;position: absolute;right: 0;bottom: 6px;border-radius: 3px;}
+        .video_comment_list_nav.main{width: 100%;height: 20px;margin-top: 20px;}
+        .video_comment_list_nav.commot{font-size: 18px;float: left}
+        .video_comment_list_nav.classbut{height: 20px;padding-left: 10px;padding-right: 10px;float: left;border: 1px solid #d3d3d3;margin-left: 30px;font-size: 12px;line-height: 20px;border-radius: 3px;text-align: center;margin-top: 1px}
+        .video_comment_list.main{width: 100%;margin-top: 20px;}
+        .video_comment_list.li{width: 100%;overflow: hidden;margin-bottom: 20px;}
+        .video_comment_list.head{width: 45px;float: left}
+        .video_comment_list.head img{width: 100%}
+        .video_comment_list.content{width: calc(100% - 55px);float: right;border-bottom: 1px solid #e8e8e8;padding-bottom: 20px}
+        .video_comment_list.uploaduser{width: 100%;height: 45px;line-height: 45px;font-size: 16px;}
+        .video_comment_list.uploaduser-span{margin-left: 10px;font-size: 14px;color: #9b9b9b}
+        .video_comment_list.content-text{font-size: 14px;}
+        .video_comment_list.func{height: 20px;margin-top: 20px;}
+        .video_comment_list.func-tab{float: left;line-height: 20px;overflow: hidden;margin-right: 30px;font-size: 12px;line-height: 20px;}
+        .video_comment_list.func-tab img{float: left}
+        .video_comment_list.func-tab span{font-size: 12px;margin-left: 5px;}</style>
+
+    {% if current_user.is_authenticated %} 
+
+    <div class="video_comment_send main">
+        <div class="video_comment_send l-head"><img src="http://picdns.niputv.com/{% if current_user.head == None %}ui/no_headimg.jpg{% else %}{{current_user.head}}{%endif%}"></div>
+        <div class="video_comment_send r-input">
+            <div id="comment_button" style="display: none">发送评论</div>
+            <textarea spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"  style="background-color: #00000000 ;padding: 0;margin: 0;width: 100%;font-size: 14px;line-height: 40px;height: 100%;overflow: hidden;border: 0;resize: none;" id="comment_input" placeholder="点击输入评论内容"></textarea>
+        </div>
+    </div>
+    {% else %}
+    <div class="video_comment_send login">如要发表评论请先登陆</div>
+    {% endif %}
+
+    <div class="video_comment_list_nav main">
+        <div class="video_comment_list_nav commot">共 <span id="commot_pcs">获取失败</span> 条评论</div>
+        <div class="video_comment_list_nav classbut">全部评论</div>
+        <div class="video_comment_list_nav classbut">热门评论</div>
+    </div>
+    <div class="video_comment_list main" id="ajax-msglist">
+        
+        <!--<div class="video_comment_list li">
+        <div class="video_comment_list head"><img src="1.png"></div>
+            <div class="video_comment_list content">
+                <div class="video_comment_list uploaduser">
+                    ShenVi<span class="video_comment_list uploaduser-span">2018-2-7 22:05</span>
+                </div>
+                <div class="video_comment_list content-text">
+                感谢up 微积分太简单了 傅里叶 期待下次教更加高难度的
+                </div>
+                <div class="video_comment_list func">
+                    <div class="video_comment_list func-tab"><img src="good.png"><span>0</span></div>
+                    <div class="video_comment_list func-tab"><img src="dlike.png"><span>0</span></div>
+                    <div class="video_comment_list func-tab">回复</div>
+                    <div class="video_comment_list func-tab">举报</div>
+                </div>
+            </div>
+        </div>-->
+        
+    </div>
+<script type="text/javascript">
+
+    var global_pagid = $("#global_pagid").data("key")
+    var global_papat = $("#global_papat").data("key")
+
+    $("#comment_input").change(function () {
+        var inputtext = $("#comment_input").val()
+        if (inputtext == "") {
+            $(".video_comment_send.main").css("height", "45px")
+            $("#comment_button").hide()
+        } else {
+            $(".video_comment_send.main").css("height", "135px")
+            $("#comment_button").show()
+        }
+    })
+
+    function add_msg(data) {
+        
+        if (data['secondary_comment'] == 0){
+            var retype = "回复"
+        }else{
+            var retype = "查看对话"+data['secondary_comment']
+        }
+
+        if (data['like_type'] == true){
+            var good_ico_type = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="17px"><image  x="0px" y="0px" width="18px" height="17px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAMAAADnhAzLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA2FBMVEX/ABj/////ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj///+svzrVAAAARnRSTlMAAAw+GBvk9kV3+zPJuZjmltoH4qua1QH+N8qxCj+3di3fu6p4BrrgViSpvYnhwGaZA7zwh+uVKlij3aEeZPnPwyCRzL5Np10WiAAAAAFiS0dEAf8CLd4AAAAHdElNRQfiCBsPECazo1vnAAAAlUlEQVQY013IVxKCMABF0RcVUWyxgb0QFRvF3rFn/0uScUQg9+fOHOBXLJ74nhBfpCSXU1FKK5lsLkr5AmgxQqVyBVU1TBqt1dFoBtRqd3gXPd7XGWODIUbcyxgDkyljuj5T5jAtW3YW+Le0YFKs1oFom61IO74XyeaSSIcjEck4iXTmF49Ux706fjf3TvB4hnu9CfkAdcYWxJFTfMsAAAAASUVORK5CYII=" /></svg>'
+        }else{
+            var good_ico_type = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="17px"><image  x="0px" y="0px" width="18px" height="17px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAQAAAB6UzRyAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiCBoXBxI9Hb5pAAAA70lEQVQoz4XRvyuEcRwH8Nfz9JTIQspAZKREjgmZlMxk8RfoGRW7zYDyXViV4SazbtExnoFIujiDUoqyqJMYpI6Hu/f47jV8fkQffia0GnGdPtR28S/S5cqRmzBdB1nUadS55Xqoz2NaUtL3LwpNZp0g8VbbJzUksqnbPIaVa1H0tV1oMWbVjJV0PQw6U1H2DE5tJOHQ9yZ3FtI8XuVFaENsTVu0fefWvi17ltJ3mYSCJMZluqvq6U8SGXIRq59+HYqN0ASN0aSb9L4xOs6+5efYPXoVvy4+FXY0mwntGTWgqkDiwLicc+Qy6MVcWuETBfhAZrW+HZkAAAAASUVORK5CYII=" /></svg>'
+        }
+
+        if (data['dislike_type'] == true){
+            var dislike_ico_type = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="17px"><image  x="0px" y="0px" width="18px" height="17px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAMAAADnhAzLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA0lBMVEX/ABj/////ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj/ABj///+xnSalAAAARHRSTlMAAHHGzGNUrZnn4e2lnuPDtNLaphhpVS2SAs6x+oIIzWbkwruyqgN68BaQswav/pTrlW5dDgHisF8eXvOXYUHABSc6BBi296IAAAABYktHRAH/Ai3eAAAAB3RJTUUH4ggbDxMSuTr8kQAAAJdJREFUGNNdy9cOglAURNHBil5QsWEDCwKiiAV7L+f/v0lMQOHup8lKBkAqnYmXBXKUF6MKRZFJgFzCr3IFSkDVGk91avDUJJWnFmvz1OmCp572F72vDIYSRswYm6Yp67DsCQVpcKbmzDAYc625t1BdCEJ4Wa6wJv+7ItqQv93tESeHDkc6JQjny5VuSbI9uj+ShOfrjZA+e4cQeF1dUccAAAAASUVORK5CYII=" /></svg>'
+        }else{
+            var dislike_ico_type = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="17px"><image  x="0px" y="0px" width="18px" height="17px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAQAAAB6UzRyAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiCBoXBhDKCO4EAAAA7UlEQVQoz4XRvyuEARzH8dc9nnQMFBLqbBaZTK7OYjSgnNXoCokS5Q9gs1zRLRabuLJZ5YbLZjAYTExHSl25LmTjec5xn+n77fPu+zORhw0L2v2lwxBZ+4qef5kz6i5kTYWY9mi+SYVRr3LSBMi48q8CA0ZaQ5MotYZe3LaCMko+W0Fjbpo6SZ2GLekhVLYi7U0NVC2rabNtSzcKuE/k++0Y0iGJcQz6cGrWgYI79VWEKta/Wzw5UbdmzqLj6Ew/6tKnLGHTeRSJQ0kEUlKK8R3CSFxRNSHAQ+MJotqTc+Sy8QNhLNt1pte19zj0BchLNJ7f5mjCAAAAAElFTkSuQmCC" /></svg>'
+        }
+
+        if (data['like_pcs'] == null){
+            var like_pcs = ''
+        }else if(data['like_pcs'] == 0){
+            var like_pcs = ''
+        }else{
+            var like_pcs = data['like_pcs']
+        }
+
+        if (data['dislike_pcs'] == null){
+            var dislike_pcs = ''
+        }else if(data['dislike_pcs'] == 0){
+            var dislike_pcs = ''
+        }else{
+            var dislike_pcs = data['dislike_pcs']
+        }
+
+        if (data['head'] == null){
+            var head = "http://picdns.niputv.com/ui/no_headimg.jpg"
+        }else{
+            var head = "http://picdns.niputv.com/head/" + data['head']
+        }
+        $("#ajax-msglist").prepend('<div class="video_comment_list li">' +
+            '<div class="video_comment_list head"><img src="'+ head +'"></div>' +
+            '<div class="video_comment_list content">' +
+            '<div class="video_comment_list uploaduser">' + data['user'] + '<span class="video_comment_list uploaduser-span">' + data['time'] + '</span>' +
+            '</div>' +
+            '<div class="video_comment_list content-text">' + data['content'] + '</div>' +
+            '<div class="video_comment_list func">' +
+            '<div class="video_comment_list func-tab good-comment" data-comment="'+ data['id'] +'">'+ good_ico_type +'<span>' +like_pcs+ '</span></div>' +
+            '<div class="video_comment_list func-tab nolike-comment" data-comment="'+ data['id'] +'">'+ dislike_ico_type +'<span>' + dislike_pcs + '</span></div>' +
+            '<div class="video_comment_list func-tab" id="comment-repcs" data-comment="'+ data['id'] +'">'+ retype +'</div>' +
+            '<div class="video_comment_list func-tab">举报</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+    };
+
+    $(function () {
+        $('#ajax-msglist').on('click', '.video_comment_list.func-tab.good-comment', function () {
+            msgid = $(this).data('comment')
+            $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/global/comment-pus/"+ msgid +"/type/like",
+            success: function (data) {
+                alert()
+            },
+        });
+        });
+    });
+
+    $(function () {
+        $('#ajax-msglist').on('click', '.video_comment_list.func-tab.nolike-comment', function () {
+            msgid = $(this).data('comment')
+            $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/global/comment-pus/"+ msgid +"/type/nolike",
+            success: function (data) {
+                alert()
+            },
+        });
+        });
+    });
+
+    function getcommentlist() {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/global/comment-list/" + global_pagid + "/0/false/" + global_papat,
+            success: function (data) {
+                $.each((data),
+                    function (data) {
+                        add_msg(this)
+                    });
+            },
+        });
+    }
+    $("#comment_button").click(function () {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/global/comment/" + global_pagid + "/" + global_papat,
+            data: {
+                "content": $('#comment_input').val()
+            },
+            success: function (data) {
+                $("#commot_pcs").html(videodata['comment_statistics'] + 1)
+                add_msg(data)
+                $("#comment_input").val('');
+                $(".video_comment_send.main").css("height", "45px")
+                $("#comment_button").hide()
+            },
+        });
+    })
+</script>
+    
+</div>

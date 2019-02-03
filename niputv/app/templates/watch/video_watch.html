@@ -1,0 +1,428 @@
+{% extends "common/min_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/watch/videoplay.css">
+<style>
+    .frame-common-header {
+        position: relative;
+    }
+</style>
+<script>var filevar = ""</script>
+<div data-info="{{info}}" id="videodata"></div>
+<div data-key="{{key}}" id="videokey"></div>
+<div id="videopage-wp" style="margin-top: 20px;">
+    <div id="videopage_l" style="padding-bottom: 150px;">
+        <div id="player"></div>
+
+        <div id="videoinfo">
+            <div id="videotitle">
+                <span id="json-videoname"></span>
+            </div>
+            <div id="videofunc">
+
+                <div class="videofunc l video-text">
+                    <span id="json-play_statistics"></span>次播放</div>
+                <div class="videofunc l video-text">
+                    <span id="json-release_date"></span>
+                </div>
+                <div class="videofunc l" id="pu-collection" style="cursor: pointer;">
+                    <div class="videofunc collection">
+                        <div class="videofunc collection-ico">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="19px">
+                                <image x="0px" y="0px" width="19px" height="19px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAMAAABFjsb+AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAByFBMVEXSLi/aMjHoOjblOTXWMTDjODXTLy/QLi7bMzLcNDLgNzPlOTXlOTXlOTXlOTXmOTXdNDLSLi/TLy/TLy/TLy/TLy/mOTXlOTXTLy/nOjblOTXTLy/TLy/RLi7cNDLoOjblOTXTLy/TLy/RLi7cNDLoOjbTLy/RLi7cNDLTLy/RLi7cNDLoOjbTLy/oOjbTLy/bMzHnOjbmOjXmOjXmOjXmOjXmOjbnOjXeNTLSLi/TLy/TLy/TLy/TLy/TLy/RLi7gNzPgNzPhNzPaMzHSLi/TLy/TLy/TLy/TLy/TLy/TLy/TLy/TLy/SLi/QLi7QLS7QLS7RLS/TLy/TLy/TLy/TLy/TLy/TLy/TLy/TLy/TLy/TLy/lOTXlOTbmOjbdNDLSLi/TLy/lOjbkMSzlMi7dNjPkNTHrYl/pT0vbJyTSLy/jLCjzpKL73tziWFfQISHSKirym5n////87u7jeXnRJibRJCTTLi7ympjtqanVOTnTLCz20dHXQEDSKCjTMDD65eXje3vUMjLSLS3ywcHZSEjTLS3jKyf/+vrtnp7QIyPkMCzwiojxiIXaIyDRKirTMTHlOzflMCvdMi/SLzDkNjHmNzPdNDNDgsvaAAAAXHRSTlMAAAAAAAAAAAAAAEzG1tXV1dXV2MA9FuDRLO3jIyYHJuvez+A7G+D0PtvwPRzfF+JCAZL09/b29vb29vfyhu88Q09PT09OT1RZRgPxWBsfFxYWFhXG4dPXzenrUXFYwnYAAAABYktHRHI2Dg1YAAAAB3RJTUUH4ggKFycQFo6seAAAAP9JREFUGNNjYGBkYubm4eXj4+MXEBQSEhIWEWVgYGEVE48Bgti4+IREEJBgYGPnkJQCCiUlp6RCxKQZZGTl5BWAQmnpGZlZYDFFBiVlFVWQWHZObl5+AURMTV0DIlZYVFxSWlYOEtPU0oaIVRQVFVVWVWOIFdXU1tWjiTU0NjWjqWtpzW+rRxJrz+noTOyC2AsT6+7p7eufABfTUQD5beKkyVPAbtYFimnogfwWM3XadIjf9IFiBoZGxiampmbmFpZWVlbWNrYMmnb2nFwOjkDg5Ozi6ubu4enFoObt4+vnHwACgUFBwWxAwBCSGBoWDgcSriAx0YhIBIjSjwaKAQCCeWle4M4bTQAAAABJRU5ErkJggg=="
+                                />
+                            </svg>
+                        </div>
+                        <div class="videofunc collection-text" id="collection-video-text">收藏该视频</div>
+                    </div>
+                </div>
+
+                <div class="videofunc r" style="width: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="5px" height="21px">
+                        <image x="0px" y="0px" width="5px" height="21px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAVCAQAAAAksOz1AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiCAoXLhjJl58DAAAASklEQVQI183MsRFAMABA0ZfUZsgeeoO4YyyThMupsE9Oo1I4nQG86lc/lGTS2o2hzDqwhlI14IoOjy0aLE6LPhSv6DuTrMrSH743DtAnlqaYvLcAAAAASUVORK5CYII="
+                        />
+                    </svg>
+                </div>
+
+                <div class="videofunc r" id="pu-dislike">
+                    <span class="videofunc goodlike-text" id="dislike-videopcs">0</span>
+                    <div style="float: right">
+                        <svg id="video-dislike-pcs-ico-true" style="display: none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="18px" height="17px">
+                            <image x="0px" y="0px" width="18px" height="17px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAMAAADnhAzLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAz1BMVEX/////ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb///83WtCzAAAAQ3RSTlMAccbMY1Stmefh7aWe48O00tqmGGlVLZICzrH6ggjNZuTCu7KqA3rwFpCzBq/+lOuVbl0OAeKwXx5e85dhQcAFJzoExv1VtgAAAAFiS0dEAIgFHUgAAAAHdElNRQfiCA0WEyb+C5iYAAAAlUlEQVQY013M1xKCQBBE0TaiCyomTGDABVHEgDmH+f9/khdk2fs0dap6AGSyObE8UKCiElcqK0wFtAr+VWvQI6o3ZGpSS6Y2GTJ1WFemXh8yDcxErKE+GquYMHvKOdcsOO6Mokx4c76wbcZ8ZxmsDD+ZrDfYUih8xY7C/eEoCjw6nemSIlxvd3qkyQ3o+UoT3p9vfP4AEcwP3MoPrSMAAAAASUVORK5CYII="
+                            />
+                        </svg>
+                        <svg id="video-dislike-pcs-ico-false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px"
+                            height="17px">
+                            <image x="0px" y="0px" width="18px" height="17px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAQAAAB6UzRyAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiCAoXMDbBAK0TAAAA7klEQVQoz4XRPSiEARzH8c9zLh0DhYQ6mxQmE3UGRgPKWY2uDKJEWQ02I1ksNunKZnoKN8igDAYz05FSV64LWeSeO8fzm/4v3/6vQQhrFjT7S/tJZO3Ke/6VnFFxJmsqiWmP5htUGPIqZ5wEMi79q4QeA/HQBArx0Iu7OCij4DMOGnHbMJPSqt+SDoLwwrAbb8qgZFlZk00b2r/x7SDstqVPixRG0evDiVl7DtyrTCKpaPWnxZNjFSvmLDqKzlRVmy5XAutOo0gtlEJCWlq+dodkxC4qGZPAQ/0JotqRc+i8/gNBWOsP6nTtvRqYxBdyqzTQ9TZzbQAAAABJRU5ErkJggg=="
+                            />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="videofunc r" id="pu-like">
+                    <span class="videofunc goodlike-text" id="like-videopcs">0</span>
+                    <div style="float: right">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="likevideo-svg-true" style="display: none;" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="18px" height="17px">
+                            <image x="0px" y="0px" width="18px" height="17px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAMAAADnhAzLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA1VBMVEX/////ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb/ADb///9vCVXvAAAARXRSTlMADD4YG+T2RXf7M8m5mOaW2gfiq5rVAf43yrEKP7d2Ld+7qngGuuBWJKm9ieHAZpkDvPCH65UqWKPdoR5k+c/DIJHMvk2xK91SAAAAAWJLR0QAiAUdSAAAAAd0SU1FB+IIDRYcKeksmcYAAACRSURBVBjTXczXEoIwFIThVRHFhg17Iyo2IPaO/bz/K8mFDkn+y29mF/gViycgpyVJT8mUNjLZnEz5AsyiJKVyBVVLlJpZb6DZiqDd6VIPfRrYjLHhCGMKcybAdMaYbc+NBVzP1/kymqw8uCbWG+F1u1NpTweVfNJUOp6gknNW6ULXkCwe3Pi/e/AAni+x9wf4Ah9mFie3m9ydAAAAAElFTkSuQmCC"
+                            />
+                        </svg>
+                        <svg id="likevideo-svg-false" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px"
+                            height="17px">
+                            <image x="0px" y="0px" width="18px" height="17px" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAQAAAB6UzRyAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiCAoXODWQ0HahAAAA50lEQVQoz4XRsSvEARQH8M/v169ElpMyEN1IiZybkG5Ql5ks/gKzYrdjZVWGm8xcJx2D4SwXSTp3g1KKsqiTMojO/c7dd3rv9Vnee0FBU3pNufP002YQNpFBt85ULDQOm9GqAdPK1tuhpGclJcn/UZdFF4h8NI6jhjqwY8gyJt23Qj3SNmVtuDQurerEK5xe2Y4c/25SsyKHdzkBEghtSQSFmgeHdh1Y8ymevCjEjX11Ly1JYMJ1qH1G9St2QrN0RnMqmcfO6Dz+lr8ZNqL4fcx5e7pl9cXQmLo8kSMzUspIxdCbpUyVL/2xNQcaFvJnAAAAAElFTkSuQmCC"
+                            />
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="video-author">
+            <div class="video-author l">
+                <img class="video-author l-userhade" src="" id="upload-userhead">
+            </div>
+            <div class="video-author r">
+                <div class="video-author author-l">
+                    <div class="video-author author-username" id="up-username">获取失败</div>
+                    <div class="video-author author-info" id="up-introduction">获取失败</div>
+                </div>
+                <div class="video-author author-r">
+                    <div class="video-author author-morebutt">私信</div>
+                    <div class="video-author author-morebutt" style="background-color: #f40045" id="ajax-follow-butt">
+                        <span id="ajax-follow-butt_text"></span>
+                        <span id="up-fans"></span>
+                    </div>
+                    <!--<div class="video-author author-morebutt_imputtext">订阅者000000</div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="video-cover">
+            <div class="video-author r" style="margin-top: 25px;">
+                <div class="video-cover_inst" id="json-video_introduction">
+                </div>
+                <div class="video-cover_moredata">稿件类型:
+                    <span id="json-reprint"></span> 分区:
+                    <span id="json-video-type-p">未知</span> -
+                    <span id="json-video-type-c">未知</span>
+                </div>
+                <div class="video-cover_moredata" style="display: none;" id="json-reprint_box">转载地址:
+                    <span id="json-reprint_link"></span>
+                </div>
+                <div class="video-cover_tagli">
+                    <div id="tag-list"></div>
+                    <div class="video-cover_tag add" id="ajaxadd-tag-butt">+</div>
+                </div>
+                <!--<div class="video-cover_tag a">科普</div><div class="video-cover_tag a">数学</div>-->
+            </div>
+        </div>
+
+        {% include 'watch/video_comment.html' %}
+    </div>
+    <div id="videopage_r">
+        <div id="advertising">
+            <img src="http://ph7qvphgm.bkt.clouddn.com/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E9%A1%B5%E9%9D%A2%E5%B9%BF%E5%91%8A%E5%9B%BE.jpg" width="100%">
+        </div>
+        <div id="move-videolist">
+
+            <!--
+            <a href="">
+                <div class="move-videolist li">
+                    <img class="move-videolist cover" src="">
+                    <div class="move-videolist info">
+                        <div class="move-videolist info-title">【7月】进击的巨人 第三季 OP(TV size)【1080P+】</div>
+                        <div class="move-videolist info-lidata">1.3万次播放</div>
+                        <div class="move-videolist info-lidata">by 史蒂夫字幕组</div>
+                    </div>
+                </div>
+            </a>
+            -->
+
+        </div>
+    </div>
+</div>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+    var videodata = $("#videodata").data("info")
+    var videoid = videodata['video_id']
+    var up = videodata['up']
+
+    $("#ajaxadd-tag-butt").click(function () {
+        var tagcontent;
+        tagcontent = prompt("请输入Tag的名称,例如[Mad Amv mv 动画],一次只能输入一个, 输入后点击提交即可");
+        if (tagcontent == null) {
+            false
+        }else if(tagcontent.length > 23){
+            alert('Tag名称过长 请重新输入')
+        } else {
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: "/api/video/tag/add-tag",
+                data: JSON.stringify({
+                    'videoid': videoid,
+                    'tag': tagcontent.toLowerCase(),
+                }),
+                success: function (data) {
+                    if (data['code'] == 1){
+                        alert('添加成功')
+                        gettaglist()
+                    }else if(data['code'] == 2){
+                        alert('暂时不支持非该视频上传者操作')
+                    }else if(data['code'] == 10086){
+                        alert('请登录后操作')
+                    }else{
+                        alert('出现了未知错误')
+                    }
+                },
+            });
+        }
+    })
+
+    //console.log(returnCitySN["cip"]+','+returnCitySN["cname"])  
+
+    $.getJSON('http://activity.niputv.com/api/video/count/' + videoid + "/" + returnCitySN["cip"],
+        function (data, textStatus) {
+            false
+        });
+
+    function add_revideo(data) {
+        $("#move-videolist").prepend('<a href="/watch/' + data['video_id'] + '">' +
+            '<div class="move-videolist li">' +
+            '<img class="move-videolist cover" src="http://pckkf57ve.bkt.clouddn.com/' + data['video_cover'] + '">' +
+            '<div class="move-videolist info">' +
+            '<div class="move-videolist info-title">' + data['video_name'] + '</div>' +
+            '<div class="move-videolist info-lidata">' + data['play_statistics'] + '次播放</div>' +
+            '<div class="move-videolist info-lidata">by ' + data['upusername'] + '</div>' +
+            '</div>' +
+            '</div>' +
+            '</a>')
+    }
+
+    $.ajax({
+        type: "post",
+        dataType: 'json',
+        url: "/api/video/recommend/" + up + "/" + videodata['video_name'],
+        success: function (data) {
+            $.each((data),
+                function (data) {
+                    add_revideo(this)
+                });
+        },
+    });
+
+    function add_tagsel(data) {
+        $("#tag-list").prepend('<div data="' + data['dataid'] + '" class="video-cover_tag a"><a href="/watch/tag/' +
+            data['tag'] + '" style="color: rgb(77, 77, 77)" target="_blank">' + data['tag'] + '</a></div>')
+    }
+
+    $("#commot_pcs").html(videodata['comment_statistics'])
+
+    $("#json-videoname").html(videodata['video_name']) //视频名
+    if (videodata['video_introduction'] == "") {
+        $("#json-video_introduction").html("(该视频无视频介绍)")
+    } else {
+        $("#json-video_introduction").html(videodata['video_introduction'])
+    }
+
+    $("#json-play_statistics").html(videodata['play_statistics']) //播放量
+    $("#json-release_date").html(videodata['release_date'] + ' - ' + videodata['release_time']) //发布日期
+
+    if (videodata['reprint'] == "") {
+        $("#json-reprint").html("原创")
+        $("#json-reprint_box").hide()
+    } else {
+        $("#json-reprint").html("转载")
+        $("#json-reprint_box").show()
+        $("#json-reprint_link").html(videodata['reprint'])
+    }
+
+    function liketype(data) {
+        if (data['code'] == true) {
+            $("#like-videopcs").css("color", "#ff0042")
+            $("#likevideo-svg-true").show()
+            $("#likevideo-svg-false").hide()
+        }
+        if (data['code'] == false) {
+            $("#dislike-videopcs").css("color", "#ff0042")
+            $("#video-dislike-pcs-ico-true").show()
+            $("#video-dislike-pcs-ico-false").hide()
+        }
+        if (data['code'] == 10086) {
+            alert('请登陆')
+        }
+    }
+
+    //获取视频分区信息类型
+    video_type(videodata['partition'], videodata['category'])
+
+    //获取up信息 #introduction
+    $.ajax({
+        type: "post",
+        dataType: 'json',
+        url: "/api/video/up?key=" + up,
+        success: function (data) {
+            $("#up-username").html(data['name'])
+            if (data['head'] == null){
+            	$("#upload-userhead").attr("src", "http://picdns.niputv.com/ui/no_headimg.jpg")
+            }else{
+            	$("#upload-userhead").attr("src", "http://picdns.niputv.com/head/" + data['head'])
+            }
+            if (data['introduction'] == '') {
+                var introduction = '她/他什么都没写'
+            } else {
+                var introduction = data['introduction']
+            }
+            $("#up-introduction").html(introduction)
+            if (data['fan_statistics'] == 0) {
+                var fans = ''
+            } else {
+                var fans = ' ' + data['fan_statistics']
+            }
+            $("#up-fans").html(fans)
+            collectionvideo()
+            follow_type()
+            gettaglist()
+        },
+    });
+
+    function gettaglist() {
+        $("#tag-list").empty();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/video/tag/get/" + videoid,
+            success: function (data) {
+                $.each((data),
+                    function (data) {
+                        add_tagsel(this)
+                    });
+            },
+        });
+    }
+
+    //获取视频收藏状态
+    function collectionvideo() {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/video/collection_type?video=" + videoid,
+            success: function (data) {
+                if(data['code'] == 10086){}else{
+                    if (data['code'] == '1') {
+                        $("#collection-video-text").html("你已收藏过该视频")
+                    }
+                    getlikedata()
+                }
+            },
+        });
+    }
+
+    function video_type(cls, tab) {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/video/class/" + cls + "/tab/" + tab,
+            success: function (data) {
+                $("#json-video-type-p").html(data['partition'])
+                $("#json-video-type-c").html(data['category'])
+            },
+        });
+    }
+
+    //获取视频点赞数据和自己是否已经点赞
+    function getlikedata() {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/video/videolike-type?video=" + videoid,
+            success: function (data) {
+                if (data['code'] == 10086){
+                    alert('请登陆后在操作')
+                }else{
+                    listdata = data["type"]
+                    $("#like-videopcs").html(data['naber']['like_frequency'])
+                    $("#dislike-videopcs").html(data['naber']['dislike_frequency'])
+                    $.each((listdata),
+                        function () {
+                            liketype(this)
+                        });
+
+                }
+            },
+        });
+    }
+
+    //收藏视频
+    $("#pu-collection").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/api/video/collection?video=" + videoid,
+            success: function (data) {
+                alert('收藏成功')
+            },
+        });
+    })
+
+    $("#pu-like").click(function () {
+        $("#like-videopcs").css("color", "#bebebe")
+        $("#likevideo-svg-true").hide()
+        $("#likevideo-svg-false").show()
+        $.ajax({
+            type: "post",
+            url: "/api/video/videolike?video=" + videoid + "&type=True",
+            success: function (data) {
+                getlikedata()
+            },
+        });
+    })
+
+    $("#pu-dislike").click(function () {
+        $("#video-dislike-pcs-ico-true").hide()
+        $("#video-dislike-pcs-ico-false").show()
+        $("#dislike-videopcs").css("color", "#bebebe")
+        $.ajax({
+            type: "post",
+            url: "/api/video/videolike?video=" + videoid + "&type=False",
+            success: function (data) {
+                getlikedata()
+            },
+        });
+    })
+
+    //订阅
+    $("#ajax-follow-butt").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/api/video/follow_auth/" + up,
+            success: function (data) {
+                follow_type(up)
+            },
+        });
+    })
+
+    //查询订阅状态
+    function follow_type() {
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "/api/video/follow_type/" + up,
+            success: function (data) {
+                if (data['code'] == false) {
+                    $("#ajax-follow-butt_text").html('+订阅')
+                    $("#ajax-follow-butt").css("background-color", "#f40045")
+                } else if (data['code'] == true) {
+                    $("#ajax-follow-butt_text").html('已订阅')
+                    $("#ajax-follow-butt").css("background-color", "#8e8e8e")
+                } else if(data['code'] == 10086){
+                    $("#ajax-follow-butt_text").html('登录后即可订阅')
+                }
+            },
+        });
+    }
+
+    getcommentlist()
+</script>
+<script type="text/javascript" src="/static/player/niputv-player.js" charset="utf-8"></script>
+{% endblock %}

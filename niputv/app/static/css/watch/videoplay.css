@@ -1,0 +1,53 @@
+#videopage-wp{max-width: 1700px;width: 98%;margin: 0 auto;min-width: 980px;}
+#videopage_l{float: left;width: calc(100% - 415px);max-width: 1280px;}
+#videopage_r{float: right;width: 395px;}
+
+#videoinfo{border-bottom: 1px solid #cacaca;margin-top: 20px;}
+.videofunc.l{float: left;margin-right: 20px}
+.videofunc.r{float: right;margin-left: 50px;cursor: pointer}
+#videotitle{color: #242424;font-size: 18px;width: 100%;}
+#videofunc{width: 100%;height: 40px;margin-top: 20px;}
+.videofunc.video-text{font-size: 14px;color: #0084ff}
+.videofunc.collection-text{font-size: 14px;float: left;}
+.videofunc.collection-ico{float: left;height: 19px;width: 19px;margin-right: 5px;}
+.videofunc.goodlike-text{float: right;float: right;font-size: 14px;margin-left: 10px;color: #bebebe}
+
+#video-author{width: 100%;margin-top: 20px;overflow: hidden;}
+.video-author.l{width: 78px;float: left}
+.video-author.r{width: calc(100% - 78px);float: right}
+.video-author.l-userhade{width: 68px;height: 68px;}
+.video-author.author{width: 100%;height: 68px;}
+.video-author.author-l{float: left;width: 48%}
+.video-author.author-r{float: right}
+.video-author.author-username{font-size: 14px;color: #000;font-weight: bold;margin-top: 13px;float: left;width: 100%}
+.video-author.author-info{font-size: 14px;color: #4d4d4d;margin-top: 5px;float: left;width: 100%}
+.video-author.author-morebutt{padding-left: 15px;padding-right: 15px;height: 32px;background-color: #d0d0d0;float: right;margin-left: 10px;border-radius: 3px;font-size: 14px;color: #fff;line-height: 32px;text-align: center;margin-top: 18px;}
+.video-author.author-morebutt_imputtext{height: 32px;float: right;line-height: 32px;margin-left: 10px;margin-top: 18px;color: #ff0042;font-size: 14px;}
+
+.video-cover{border-bottom: 1px solid #cacaca;overflow: hidden;padding-bottom: 15px;}
+.video-cover_inst{font-size: 14px;width: 80%;min-height: 20px;margin-bottom: 20px;white-space: pre-line;transition: all .3s;line-height: 18px;}
+.video-cover_moredata{width: 100%;height: 20px;font-size: 14px;}
+.video-cover_tagli{width: 100%;height: 24px;margin-top: 15px;}
+.video-cover_tag.a{height: 24px;padding-left: 10px;padding-right: 10px;margin-right: 10px;font-size: 14px;border: 1px solid #d3d3d3;float: left;border-radius: 50px;line-height: 24px;}
+.video-cover_tag.add{width: 24px;height: 24px;border-radius: 50px;border: 1px solid #d3d3d3;float: left;line-height: 24px;text-align: center;}
+
+#advertising{width: 100%;min-height: 150px;border-bottom: 1px solid #cacaca;padding-bottom: 20px;}
+
+#move-videolist{margin-bottom: 20px;margin-top: 20px;}
+.move-videolist.li{height: 106.39px;margin-bottom: 20px;color: #000}
+.move-videolist.cover{height: 106.39px;width: 190px;float: left;overflow: hidden}
+.move-videolist.info{float: right;width: calc(100% - 200px);height: 100%}
+.move-videolist.info-title{font-size: 12px;height: 50px;}
+.move-videolist.info-lidata{width: 100%;height: 20px;font-size: 12px;line-height: 20px;}
+
+#player_r_more{width: 380px;}
+/* 1200px */
+@media (max-width: 1150px){
+    #player_r_more{width: 280px;}
+    #videopage_l{float: left;width: calc(100% - 320px)}
+    #videopage_r{float: right;width: 300px;}
+    .video-author.author-l{width: 100%;}
+    .video-author.author-r{width: 100%}
+    .video-author.author-morebutt{float: left;margin-right: 10px;margin-left: 0px;}
+    .video-author.author-morebutt_imputtext{float: left;margin-left: 0px;}
+}

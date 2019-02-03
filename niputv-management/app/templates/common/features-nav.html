@@ -1,0 +1,9 @@
+{% if headernav_tab == 'review' %}
+    <a href="/review/review"><div class="common-featuresnav a-hi">等待审核的视频</div></a>
+{% endif %}
+
+{% if headernav_tab == 'bangumi' %}
+    <a href="/bangumi/loading"><div class="common-featuresnav a{% if features_tab == 'bangumi-loading' %}-hi{% endif %}">连载中</div></a>
+    <a href="/bangumi/release"><div class="common-featuresnav a{% if features_tab == 'bangumi-release' %}-hi{% endif %}">发布新的番剧</div></a>
+    <a href="/bangumi/edit"><div class="common-featuresnav a{% if features_tab == 'bangumi-edit' %}-hi{% endif %}">编辑番剧</div></a>
+{% endif %}

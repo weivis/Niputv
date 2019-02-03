@@ -1,0 +1,32 @@
+.video_upload.main{width: calc(100% - 40px);padding: 20px;overflow: hidden;box-shadow: 0 5px 5px #0000002b;padding-bottom: 50px;background-color: #fff}
+.video_upload.l-wp{width: 250px;float: left}
+.video_upload.r-wp{width: calc(100% - 270px);float: right}
+.video_upload.imput_text{font-size: 14px;color: #0072ff;width: 100%;margin-top: 15px}
+.video_upload.imput_br{width: 100%;height: 1px;background-color: #bababa;margin-top: 35px;margin-bottom: 35px;}
+.video_upload.r-wp-2{width: 100%;overflow: hidden}
+.video_upload.r-wp-2-1{width: 40%;float: left}
+.video_upload.r-wp-2-2{width: 60%;float: right}
+
+.input_bradius{border-radius: 3px;}
+
+.video_upload_input.selection-title{font-size: 14px;margin-bottom: 15px;}
+.video_upload_input.selection{width: 100%;}
+.video_upload_input.selection-input{width: 40%;height: 35px;border: 1px solid #bababa;float: left;margin-right: 5%;}
+
+.video_upload_input.typeofwork_selection{width: 25%;height: 35px;border: 1px solid #bababa;float: left;}
+.video_upload_input.typeofwork_input{width: 71%;height: 35px;border: 1px solid #bababa;float: right}
+
+.video_upload_input.purpose_input{width: 100%;margin-top: 20px;}
+.video_upload_input.purpose_input-title{width: 100%;margin-bottom: 15px;font-size: 14px;}
+.video_upload_input.purpose_input-input_text{height: 35px;border: 1px solid #bababa;width: 100%;line-height: 18px;}
+
+.video_upload_videocover{width: 250px;min-height: 100px;border: 1px solid #bababa;background-color: #ececec;height: 140px;line-height: 140px;text-align: center}
+
+.video_upload_input.upload-schedule{width: 100%;height: 30px;border: 1px solid #bababa;position: relative;}
+.video_upload_input.upload-schedule_text{position: absolute;left: 10px;top: 0;bottom: 0;margin: auto;font-size: 14px;line-height: 30px;}
+.video_upload_input.upload-schedule_filling{float: left;height: 100%;background-color: #bdedff;}
+
+.video_upload.push{width: 100%;height: 45px;margin-top: 30px;}
+.video_upload.push-button{float: left;height: 45px;line-height: 45px;width: 150px;margin-right: 20px;text-align: center;color: #fff;font-size: 14px;}
+
+-webkit-box-shadow: 0 1px 0 #dadada;

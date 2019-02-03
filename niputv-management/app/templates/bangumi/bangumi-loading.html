@@ -1,0 +1,119 @@
+{% extends "common/frame-leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .bangumi-box.scroll {
+        width: 25%;
+        float: left;
+        margin-bottom: 30px;
+        min-width: 415px
+    }
+
+    .bangumi-box.scroll:nth-child(4n) {
+        max-width: 385px
+    }
+
+    .bangumi-box.main {
+        height: 212px;
+        max-width: 385px;
+        background-color: #fff;
+        box-shadow: 0px 5px 5px #00000025;
+    }
+
+    .bangumi-box.cover {
+        height: 212px;
+        float: left
+    }
+
+    .bangumi-box.title {
+        width: calc(100% - 175px);
+        font-size: 18px;
+        font-weight: bold;
+        float: left;
+        margin-left: 15px;
+        margin-top: 15px;
+        height: 48%
+    }
+
+    .bangumi-box.info {
+        width: calc(100% - 175px);
+        font-size: 14px;
+        float: left;
+        margin-left: 15px;
+        margin-top: 15px;
+        color: #313131
+    }
+
+    .bangumi-anime.content {
+        display: none;
+    }
+</style>
+<div class="bangumi-wtnav" style="width: 100%;overflow: hidden;margin-bottom: 10px;" id="bangumi_tabnav">
+    <li class="admin-ui buttom-red">全部</li>
+    <li class="admin-ui buttom-normal">周一</li>
+    <li class="admin-ui buttom-normal">周二</li>
+    <li class="admin-ui buttom-normal">周三</li>
+    <li class="admin-ui buttom-normal">周四</li>
+    <li class="admin-ui buttom-normal">周五</li>
+    <li class="admin-ui buttom-normal">周六</li>
+    <li class="admin-ui buttom-normal">周日</li>
+</div>
+<div id="bangumi_tabcontent" style="width: 100%;overflow: hidden;">
+    <ul id="bangumi-all" class="bangumi-anime content" style="display:block;">
+    </ul>
+    <ul class="bangumi-anime content" id="bangumi-1day">1</ul>
+    <ul class="bangumi-anime content" id="bangumi-2day">2</ul>
+    <ul class="bangumi-anime content" id="bangumi-3day">3</ul>
+    <ul class="bangumi-anime content" id="bangumi-4day">4</ul>
+    <ul class="bangumi-anime content" id="bangumi-5day">5</ul>
+    <ul class="bangumi-anime content" id="bangumi-6day">6</ul>
+    <ul class="bangumi-anime content" id="bangumi-7day">7</ul>
+</div>
+
+<script>
+    window.onload = function () {
+        var oLi = document.getElementById("bangumi_tabnav").getElementsByTagName("li");
+        var oUl = document.getElementById("bangumi_tabcontent").getElementsByTagName("ul");
+
+        for (var i = 0; i < oLi.length; i++) {
+            oLi[i].index = i;
+            oLi[i].onclick = function () {
+                for (var n = 0; n < oLi.length; n++) oLi[n].className = "admin-ui buttom-normal";
+                this.className = "admin-ui buttom-red";
+                for (var n = 0; n < oUl.length; n++) oUl[n].style.display = "none";
+                oUl[this.index].style.display = "block";
+            }
+        }
+    }
+</script>
+<script>
+    function bangumi_list(data) {
+        div = '<div class="bangumi-loinslist">' +
+            '<div class="bangumi-box scroll">' +
+            '<div class="bangumi-box main">' +
+            '<div class="bangumi-box cover">' +
+            '<img src="http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/'+ data['cover'] +'" height="100%">' +
+            '</div>' +
+            '<div class="bangumi-box title">' + data['name'] + '</div>' +
+            '<div class="bangumi-box info">更新至 : '+ data['video_statistics'] +' 话 - 每周'+ data['uploads_week']+'更新</div>' +
+            '<div style="width: calc(100% - 175px);float: left;margin-left: 15px;margin-top: 10px;">' +
+            '<a href="/bangumi/edit/'+ data['id'] +'" target="_blank"><div class="admin-ui buttom-red" style="margin-right: 10px;">编辑</div></a>' +
+            '<a href="/bangumi/edit/drama/'+ data['id'] +'" target="_blank"><div class="admin-ui buttom-red" style="margin-right: 10px;">更新</div></a>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>'
+        $("#bangumi-all").prepend(div)
+        var day = data['uploads_week'];
+        if(day == ''){}else{
+            $("#bangumi-"+ day +"day").prepend(div)
+        }
+    };
+    $.getJSON('loading/api/get-list',
+        function (data, textStatus) {
+            $.each((data),
+                function () {
+                    bangumi_list(this);
+                });
+        });
+</script>
+{% endblock %}

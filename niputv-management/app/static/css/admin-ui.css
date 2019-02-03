@@ -1,0 +1,22 @@
+.admin-ui.buttom-red{margin-right: 30px;min-width: 65px;text-align: center;line-height: 35px;float: left;padding-left: 12px;padding-right: 12px;height: 35px;line-height: 35px;background-color: #ff2165;font-size: 14px;color: #fff;border-radius: 3px;}
+.admin-ui.buttom-normal{margin-right: 30px;min-width: 65px;text-align: center;line-height: 35px;float: left;padding-left: 12px;padding-right: 12px;height: 35px;line-height: 35px;background-color: #eeeeee;font-size: 14px;color: #565656;border-radius: 3px;}
+.admin-ui.buttom-blue{min-width: 65px;text-align: center;line-height: 35px;float: left;padding-left: 12px;padding-right: 12px;height: 35px;line-height: 35px;background-color: #0078ff;font-size: 14px;color: #fff;border-radius: 3px;}
+
+.admin-ui.inpurt-input-name{width: 100%;color: #313131;font-size: 14px;margin-bottom: 15px;}
+.admin-ui.inpurt-input{width: 100%;height: 33px;background-color: #eeeeee;border-radius: 3px; border: 1px solid #d5d5d5;padding: 0;line-height: 33px;margin-bottom: 15px;}
+.admin-ui.inpurt-textarea{width: 100%;min-height: 170px; background-color: #eeeeee;border-radius: 3px; border: 1px solid #d5d5d5;padding: 0;line-height: 33px;margin-bottom: 15px;}
+.admin-ui.inpurt-select{width: 100%;height: 33px;background-color: #eeeeee;border-radius: 3px; border: 1px solid #d5d5d5;margin-bottom: 15px;}
+.admin-ui.inpurt-time{width: 100%;height: 33px;background-color: #eeeeee;border-radius: 3px; border: 1px solid #d5d5d5;margin-bottom: 15px;text-align: center;line-height: 33px;}
+
+.admin-ui.br{margin-top: 30px;margin-bottom: 20px;width: 100%;height: 1px;background-color: #d5d5d5}
+
+.admin-ui.info_title_cover-box{width: 100%;min-height: 100px;border-bottom: 1px solid #b5b5b5;margin-bottom: 20px;}
+.admin-ui.info_title_cover-content_title{width: 100%;font-size: 14px;color: #8d8d8d}
+.admin-ui.info_title_cover-content_content{width: 100%;margin-top: 20px; padding-bottom: 20px;font-size: 18px;}
+
+.admin-ui.response-modulebox-1{width: 100%;overflow: hidden}
+.admin-ui.response-modulebox-2-1-l{float: left;width: calc(50% - 10px)}
+.admin-ui.response-modulebox-2-1-r{float: right;width: calc(50% - 10px)}
+
+.admin-ui.allwp-title{width: 100%;font-size: 14px;font-weight: bold;color: #313131;margin-bottom: 15px;}
+.admin-ui.highlight-imput{width: calc(100% - 10px);padding: 5px;background-color: aqua;border-radius: 3px;font-size: 14px;margin-bottom: 15px;}

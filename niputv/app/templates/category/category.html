@@ -1,0 +1,124 @@
+{% extends "common/common_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/main/category.css">
+<link rel="stylesheet" type="text/css" href="/static/css/module/public_module.css">
+<style>
+</style>
+<div data-json='{{data}}' id="category"></div>
+
+<div class="category-header main unite-index-margintop top" id="category-headerbackground" style="background-image: url()">
+
+    <div class="unite-index-width" style="position: relative;">
+
+        <div class="header-icotop">
+            <div class="unite-index-width_imgbox">
+                <img src="" class="category-header ico" id="category-ico">
+            </div>
+            <div class="category-header ico_title" id="category-cnname">获取失败</div>
+            <div class="category-header ico_title" id="category-enname">获取失败</div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="unite-index-margintop none category-nav main_bottomborder">
+    <div class="category-nav main" id="category-nav">
+        <!--<a href="" target=""><div class="category-nav link">原创</div></a>-->
+    </div>
+</div>
+
+<div class="unite-index-width unite-index-margintop none" id="video-tab-list">
+
+    <!--
+
+            <div class="module-interchangeable-indexvideo-videolist main">
+                <div class="module-interchangeable-indexvideo-videolist wp">
+                    <div class="module-interchangeable-indexvideo-videolist cover"></div>
+                    <div class="module-interchangeable-indexvideo-videolist title">
+                        史上最长的择偶标准：好男人应该满足这43个条件 | 史蒂夫哈维 Steve Harvey
+                    </div>
+                    <div class="module-interchangeable-indexvideo-videolist video_info">
+                        815次播放 - 2018-07-23
+                    </div>
+                </div>
+            </div>
+
+    -->
+</div>
+</div>
+<script type="text/javascript">
+    var json = $.parseJSON($("#category").data("json").replace(/'/g, '"'))
+    var json_style = json['style']
+    var json_nav = json['nav']
+
+    function generate_navlink(data) {
+        $("#category-nav").prepend('<a href="' + data['url'] + '" target=""><div class="category-nav link">' + data[
+            'navtitle'] + '</div></a>')
+    };
+    console.log(json_nav)
+    $("#category-cnname").html(json_style['name_cn'])
+    $("#category-enname").html(json_style['name_en'])
+    $("#category-headerbackground").css("background-image", 'url(http://picdns.niputv.com/category/' + json_style['cover'] +
+        ')')
+    $("#category-ico").attr("src", 'http://picdns.niputv.com/category-ico/' + json_style['ico'])
+
+    function add_contenttab(data) {
+        var div = $("#video-tab-list").prepend(
+            '<div class="module-interchangeable-indexvideo main data-' + data['id'] + '" data-classname="' + data[
+                'id'] + '">' +
+            '<div class="module-interchangeable-indexvideo title">' +
+            '<span class="module-interchangeable-indexvideo module_titile">' + data[
+                'navtitle'] + '</span>' +
+            '<a class="module-interchangeable-indexvideo more_link" href="' + data[
+                'url'] + '">更多></a>' +
+            '</div>' +
+            '<div class="module-interchangeable-indexvideo videolist">' +
+            '</div>' +
+            '</div>')
+        getscrolldata(data['id'])
+    }
+
+    function getscrolldata(i) {
+        $.ajax({
+            type: "POST", //方式 可GET 或 POST
+            url: "api/get/category/video/" + i,
+            dataType: 'json',
+            success: function (data) {
+                $.each((data),
+                    function () {
+                        addvideoa(this, i)
+                    }
+
+                )
+            }
+        });
+    }
+
+    function addvideoa(data, i) {
+        $(".module-interchangeable-indexvideo.main.data-" + i).find(
+            ".module-interchangeable-indexvideo.videolist").prepend(
+            '<div class="module-interchangeable-indexvideo-videolist main">' +
+            '<a href="/watch/' + data['video_id'] + '" target="_blank">' +
+            '<div class="module-interchangeable-indexvideo-videolist wp">' +
+            '<div class="module-interchangeable-indexvideo-videolist cover"><img src="http://pckkf57ve.bkt.clouddn.com/' +
+            data['video_cover'] + '" height="100%"></div>' +
+            '<div class="module-interchangeable-indexvideo-videolist title">' + data['video_name'] + '</div>' +
+            '<div class="module-interchangeable-indexvideo-videolist video_info">' + data['play_statistics'] +
+            '次播放 - ' + data['release_date'] +
+            '</div>' +
+            '</div>' +
+            '</a>' +
+            '</div>')
+    }
+
+    $(document).ready(function (e) {
+
+        $.each((json_nav),
+            function () {
+                generate_navlink(this)
+                add_contenttab(this)
+            });
+
+    });
+</script>
+{% endblock %}

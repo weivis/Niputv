@@ -1,0 +1,188 @@
+{% extends "frame/frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/space/space-index.css">
+<head>
+<style type="text/css">
+    @media screen and (max-width:1680px ) {
+        .space-publicvideo-box:nth-child(5){display: none}
+        .space-wp{width: 1190px}
+    }
+    .frame-common-leftnav{float: left;height: calc(100% - 70px);position: fixed;background-color: #fff;padding-top: 70px;overflow-y: overlay;border-right: 1px solid #d5d5d5}
+</style>
+</head>
+<div id="data-cache-id" data-pagecache='{{data}}'>
+<div class="space-header top" style="margin-top: 70px;">
+    <div class="space-wp" style="height: 100%">
+        <div class="spaceheader-head"><img src="" id="userhead"></div>
+        <div class="spaceheader userplayinfo">关注 : <span id="foll_qu"></span> 粉丝 : <span id="fan_qu"></span> 播放数 : <span id="play_qu"></span></div>
+    </div>
+    <div style="background-image: url(/static/img/space/header-covershon.png);height: 139px;width: 100%;position: absolute;top: 0;"></div>
+</div>
+<div class="space-nav">
+    <div class="space-wp" style="overflow: hidden;height: 100%">
+        
+        <div class="space-nav-follli">
+            <div class="space-nav-follbutt">发送私信</div>
+            <div class="space-nav-follbutt" style="background-color: #ff1a60;color: #fff">点击关注</div>
+        </div>
+        
+        <div class="space-data username" id="username">ShenVi</div>
+        <div class="space-data userinfo" id="introduction">微博@史蒂夫哈维字幕组 每天来笑一笑 发个黑人问号</div>
+        
+        <div class="spacenav">
+            <div class="spacenav-a">
+                <a href="" target=""><div>主页</div></a>
+            </div>
+            <div class="spacenav-a">
+                <a href="" target=""><div>视频</div></a>
+            </div>
+            <div class="spacenav-a">
+                <a href="" target=""><div>列表</div></a>
+            </div>
+            <div class="spacenav-a">
+                <a href="" target=""><div>收藏</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="space-wp" style="margin-top: 20px;">
+    <div class="space-wp-l">
+        <div class="space-user_topvideo" id="topvideo-box" style="display: none;"></div>
+        <div id="video-pg"></div>
+        <div class="space-uservideo">
+        <div class="space-module-uptitle" style="color: #000">TA的视频</div>
+            <div style="margin-top: 20px;">
+                <div class="space-uservideo-box">
+                    <div class="space-uservideo-img"></div>
+                    <div class="space-uservideo-info">
+                        <div class="space-uservideo-info-title">ASD</div>
+                        <div class="space-uservideo-info-date"> 
+                            <div>2017-1-12</div>
+                            <div>2017-1-12</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-uservideo-box">
+                    <div class="space-uservideo-img"></div>
+                    <div class="space-uservideo-info">
+                        <div class="space-uservideo-info-title">ASD</div>
+                        <div class="space-uservideo-info-date"> 
+                            <div>2017-1-12</div>
+                            <div>2017-1-12</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-uservideo-box">
+                    <div class="space-uservideo-img"></div>
+                    <div class="space-uservideo-info">
+                        <div class="space-uservideo-info-title">ASD</div>
+                        <div class="space-uservideo-info-date"> 
+                            <div>2017-1-12</div>
+                            <div>2017-1-12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="space-wp-r">
+        <div class="space-module-uptitle">简介</div>
+        <div class="space-user_cover">微博@史蒂夫哈维字幕组</div>
+    </div>
+</div>
+<script type="text/javascript">
+        var cache = $("#data-cache-id").data("pagecache")
+        var id = cache['cache']
+
+        function topvideo(videoid){
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                url: "/getvideo/" + videoid,
+                success: function (data) {
+                    $("#topvideo-box").show()
+                    $("#topvideo-box").prepend('<a href="" target="">' +
+                        '<div class="space-user_topvideo-cover"><img src=http://video-cover.niputv.com/'+ data['video_cover'] +' width=100%></div>' +
+                        '<div class="space-user_topvideo-info">' +
+                            '<div class="space-user_topvideo-info-videotitle">'+ data['video_name'] +'</div>' +
+                            '<div class="space-user_topvideo-info-videoinfo">youtube 微博@史蒂夫哈维字幕组 Steve Harvey脱口秀中的经典环节「Ask Steve」</div>' +
+                        '</div>' +
+                    '</a>')
+                },
+            })
+        }
+
+        $.ajax({
+        type: "post",
+        dataType: 'json',
+        url: "/getinfo/" + id,
+        success: function (data) {
+            if (data['topping_video'] == null){}else{
+                topvideo(data['topping_video'])
+            }
+
+            if (data['head'] == null){
+                $("#userhead").attr("src","http://picdns.niputv.com/ui/"+"no_headimg.jpg")
+            }else{
+                $("#userhead").attr("src","http://picdns.niputv.com/"+data['head'])
+            }
+
+            $("#username").html(data['username'])
+            $("#introduction").html(data['introduction'])
+            $("#foll_qu").html()
+            $("#fan_qu").html(data['fan'])
+            $("#play_qu").html(data['play'])
+        },
+        });
+
+            function add_userpg(pg){
+
+                $("#video-pg").prepend('<div class="space-uservideo-pg box">' +
+                    '<div class="space-uservideo-pg title">' +
+                        '<div class="space-uservideo-pg title-l">'+pg['title']+'</div>' +
+                        '<div class="space-uservideo-pg title-r">查看更多</div>' +
+                    '</div>' +
+                    '<div class="space-uservideo-pg list" id="pg-id'+pg['pgid']+'">' +
+                    '</div>' +
+                '</div>')
+
+                $.ajax({
+                type: "post",
+                dataType: 'json',
+                url: "/indexpgvideo/" + pg['pgid'],
+                success: function (data) {
+                    $.each((data),
+                        function () {
+                            $("#pg-id"+pg['pgid']).prepend('<div class="space-publicvideo-box">' +
+                                '<a href="" target="">' +
+                                    '<div class="space-publicvideo-cont">' +
+                                        '<div class="space-publicvideo-img">' +
+                                            '<img src="http://video-cover.niputv.com/0f4bf07995f9f402302f89ba91cd7d34211135.jpg" width="100%">' +
+                                        '</div>' +
+                                        '<div class="space-publicvideo-title">' +
+                                            '【初音ミク】被吸引的卫星【オリジナルMV付き】' +
+                                        '</div>' +
+                                        '<div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</a>' +
+                            '</div>')
+                        })
+                },
+                })
+            }
+
+        $.ajax({
+        type: "post",
+        dataType: 'json',
+        url: "/getuservideopg/" + id,
+        success: function (data) {
+            $.each((data),
+                function () {
+                    add_userpg(this)
+                    //alert(this)
+                })
+        },
+        })
+
+</script>
+{% endblock %}

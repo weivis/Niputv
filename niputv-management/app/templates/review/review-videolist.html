@@ -1,0 +1,42 @@
+{% extends "common/frame-leftnav.html" %}{% block content %}
+<div class="review-videolist" id="video-list"></div>
+<!--
+<div class="review-video scroll-box">
+    <div class="review-video box">
+        <div class="review-video img">
+            <div class="review-video button">立即审核</div>
+            <img src="1.png">
+        </div>
+        <div class="review-video title">
+            <div>测试视频1</div>
+        </div>
+        <div class="review-video date">2018-09-03 - 16:43:08</div>
+    </div>
+</div>
+-->
+<script type="text/javascript">
+    function videolist(data) {
+        $("#video-list").prepend('<div class="review-video scroll-box">' +
+            '<div class="review-video box"><a href="/review/review-video/'+ data ['video_id'] +'" target="_blank">' +
+            '<div class="review-video img">' +
+            '<div class="review-video button">立即审核</div>' +
+            '<img src="http://pckkf57ve.bkt.clouddn.com/'+ data['video_cover'] +'" width="100%">' +
+            '</div></a>' +
+            '<div class="review-video title">' +
+            '<div>'+data['video_name']+'</div>' +
+            '</div>' +
+            '<div class="review-video date">'+data['release_date']+' - '+data['release_time']+'</div>' +
+            '</div>' +
+            '</div>')
+    };
+    $(document).ready(function () {
+        $.getJSON('api/review-videolist',
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        videolist(this);
+                    });
+            });
+    });
+</script>
+{% endblock %}

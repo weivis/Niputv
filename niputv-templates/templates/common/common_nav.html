@@ -1,0 +1,92 @@
+<div class="frame-common-leftnav_list link-list" style="padding-top: 10px;">
+    <a href="http://www.niputv.com/">
+        <div class="frame-common-leftnav_list link-a">
+            <div class="frame-common-leftnav_list link-ico">
+                <img src="/static/img/frame/leftnav-home.png" class="frame-common-leftnav_list link-icoimg">
+            </div>
+            <span class="frame-common-leftnav_list text">首页</span>
+        </div>
+    </a> 
+    {% if current_user.is_authenticated %}
+    <a href="http://space.niputv.com/{{current_user.id}}" target="_blank">
+        <div class="frame-common-leftnav_list link-a">
+            <div class="frame-common-leftnav_list link-ico">
+                <img src="/static/img/frame/leftnav-myspcae.png" class="frame-common-leftnav_list link-icoimg">
+            </div>
+            <span class="frame-common-leftnav_list text">我的频道</span>
+        </div>
+    </a>
+    <div class="frame-common-leftnav_list link-a">
+        <div class="frame-common-leftnav_list link-ico">
+            <img src="/static/img/frame/leftnav-subscription.png" class="frame-common-leftnav_list link-icoimg">
+        </div>
+        <span class="frame-common-leftnav_list text">动态</span>
+    </div>
+    <a href="/user/bangumi">
+        <div class="frame-common-leftnav_list link-a">
+            <div class="frame-common-leftnav_list link-ico">
+                <img src="/static/img/frame/leftnav-history.png" class="frame-common-leftnav_list link-icoimg">
+            </div>
+            <span class="frame-common-leftnav_list text">我追的番</span>
+        </div>
+    </a>
+    <div class="frame-common-leftnav_list link-a">
+        <div class="frame-common-leftnav_list link-ico">
+            <img src="/static/img/frame/leftnav-history.png" class="frame-common-leftnav_list link-icoimg">
+        </div>
+        <span class="frame-common-leftnav_list text">观看历史</span>
+    </div>
+    {% endif %}
+    <div class="frame-common-leftnav_list link-list_bottomeborder"></div>
+</div>
+
+<div class="frame-common-leftnav_list link-list">
+
+    <div class="frame-common-leftnav_list list_name">更多内容</div>
+    <div id="ajax-nav"></div>
+    <div class="frame-common-leftnav_list link-list_bottomeborder"></div>
+
+    <!--
+            <div class="frame-common-leftnav_list link-a">
+                <div class="frame-common-leftnav_list link-ico">
+                    <img src="/static/img/frame/leftnav-history.png" class="frame-common-leftnav_list link-icoimg">
+                </div>
+                <span class="frame-common-leftnav_list text">极客</span>
+            </div>
+        -->
+    <script type="text/javascript">
+        function nav_nwe(data) {
+
+            if(data['url'] == 'bangumi'){
+                var a='/'
+            }else{
+                var a='/category/'
+            }
+
+            $("#ajax-nav").prepend('<a href="'+ a + data['url'] +
+                '" target="_blank"><div class="frame-common-leftnav_list link-a">' +
+                '<div class="frame-common-leftnav_list link-ico">' +
+                '<img src="/static/img/frame/leftnav-history.png" class="frame-common-leftnav_list link-icoimg">' +
+                '</div>' +
+                '<span class="frame-common-leftnav_list text">' + data['title'] + '</span>' +
+                '</div></a>')
+        };
+        $(document).ready(function () {
+            $.getJSON('http://www.niputv.com/api/nav',
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            nav_nwe(this);
+                        });
+                });
+        });
+    </script>
+</div>
+{% if current_user.is_authenticated %} 
+<div class="frame-common-leftnav_list link-list">
+
+    <div class="frame-common-leftnav_list list_name">订阅的频道</div>
+
+
+</div>
+{% endif %}

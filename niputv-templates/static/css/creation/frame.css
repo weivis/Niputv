@@ -1,0 +1,52 @@
+/**--------------------------------------------------------**/
+/**作者 ShenVi站长 该css控制界面框架**/
+
+/**页头主体**/
+.frame-common-header{position: fixed;height: 70px;width: 100%;background-color: #fff;z-index: 99999;line-height: 70px;}
+/**打开侧边栏按钮**/
+.frame-common-header_style.left_nav_open_butt{position: absolute;left: 35px;top: 0;bottom: 0;margin: auto}
+/**logo**/
+.frame-common-header_style.header-logo{position: absolute;left: 75px;top: 0;bottom: 0;margin: auto;}
+/**页头logo父级**/
+.frame-common-header_logo_pubox{position: relative;float: left;height: 70px;}
+/**页头阴影**/
+.frame-common-header_style.box-shon{/**box-shadow:0 0 8px #0000003b**/border-bottom: 1px solid #d5d5d5}
+/**左侧导航栏款宽度控制**/
+.frame-common-left_width{width: 226px;}
+/**搜索框按钮**/
+.frame-common-header_search.button{width: 50px;height: 100%;float: right;border: 0;margin: 0;background-color: #f4f4f4}
+/**搜索框主体长度**/
+.frame-common-header_search.input{max-width: 450px;min-width: 250px;width: 35%;height: 37px;border: 1px solid #dadada;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto;float: left;border-radius: 4px;overflow: hidden}
+/**搜索框输入框**/
+.frame-common-header_search.input_on{width: calc(100% - 50px);height: 100%;background-color: #f4f4f4;border: 0;margin: 0}
+/**页头上传视频**/
+.frame-common-header_uploadvideo{height: 100%;float: right;position: relative;width: 50px;}
+.frame-common-header_uploadvideo_img{position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto}
+
+/**--------------------------------------------------------**/
+
+.frame-common-leftnav{float: left;height: calc(100% - 70px);position: fixed;background-color: #fff;padding-top: 70px;overflow-y: overlay;border-right: 1px solid #d5d5d5}
+.frame-common-leftnav_list.link-list{width: 100%;}
+.frame-common-leftnav_list.link-a{width: 100%;height: 20px;line-height: 20px;font-size: 14px;color: #2b2b2b;padding-top: 10px;padding-bottom: 10px;}
+.frame-common-leftnav_list.link-ico{margin-left: 25px; float: left;width: 35px;position: relative;height: 100%}
+.frame-common-leftnav_list.link-icoimg{position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto}
+.frame-common-leftnav_list.text{float: left;margin-left: 15px;}
+.frame-common-leftnav_list.link-list_bottomeborder{height: 1px;width: 80%;margin: 0 auto}
+
+.frame-common-leftnav_list.list_name{width: 80%;margin: 0 auto;height: 30px;line-height: 30px;font-size: 12px;color: #2b2b2b}
+
+/**左侧导航栏模块底部描线**/
+.frame-common-leftnav_list.link-list_bottomeborder{background-color: #dadada;margin-top: 20px;width: 85%;}
+
+/**--------------------------------------------------------**/
+
+/**左侧弹窗导航大小主体**/
+.frame-common-popups_popbox{width: 220px;height: 60%;position: fixed;top: 70px;left: 20px;min-height: 400px;}
+/**左侧弹窗导航内容显示主体**/
+.frame-common-popups_nav{background-color: #efefef;width: 100%;height: calc(100% - 25px);overflow-y: overlay;position: absolute;bottom: 0}
+
+.frame-common-popups_nav::-webkit-scrollbar{ width: 10px; }
+.frame-common-popups_nav::-webkit-scrollbar-thumb{width: 10px;background-color: #c7c7c7;border-radius: 300px;height: 30px;}
+
+/**--------------------------------------------------------**/
+.frame-common-right_content{width: calc(100% - 226px);float: right;}

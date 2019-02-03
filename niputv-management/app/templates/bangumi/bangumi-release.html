@@ -1,0 +1,198 @@
+{% extends "common/frame-leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<link rel="stylesheet" type="text/css" href="/static/js/tag-editor/jquery.tag-editor.css">
+<script type="text/javascript" src="/static/js/tag-editor/jquery.tag-editor.js"></script>
+<style>
+    .bangumi-release.page-wp {
+        max-width: 1171px;
+        width: 90%;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .bangumi-release.page-wp-l {
+        width: 200px;
+        float: left
+    }
+
+    .bangumi-release.page-wp-r {
+        width: calc(100% - 481px);
+        border-right: 1px solid #d5d5d5;
+        float: left;
+        margin-left: 20px;
+        padding-right: 20px;
+    }
+    .bangumi-release.page-wp-r-2{width: 220px;position: absolute;right: 0;top: 0;}
+</style>
+<div class="bangumi-release page-wp">
+    <div class="bangumi-release page-wp-l">
+
+        <div class="admin-ui allwp-title">上传封面</div>
+        <div class="bangumi-cover">
+            <img src="" width="100%" style="max-height: 300px;border: 1px solid #d5d5d5" id="viwe">
+        </div>
+        <form id="uploadForm" enctype=multipart/form-data style="overflow: hidden;">
+            <input name="key" type="hidden" value="" id="coverkey">
+            <input name="token" type="hidden" value="" id="covertoken">
+            <input name="file" type="file" id="cover_file" />
+            <!--     <input name="crc32" type="hidden" /> -->
+            <input name="accept" type="hidden" />
+        </form>
+        <div id="upload-type"></div>
+
+    </div>
+    <div class="bangumi-release page-wp-r">
+        <div class="admin-ui allwp-title">番剧资料</div>
+        <div class="admin-ui inpurt-input-name">番剧名</div>
+        <input class="admin-ui inpurt-input" id="bangumi_name">
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                <div class="admin-ui inpurt-input-name">年份</div>
+                <select class="admin-ui inpurt-select" id="bangumi_playyesr">
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+                    <option value="2010">2010</option>
+                    <option value="2010">2009</option>
+                    <option value="2010">2008</option>
+                    <option value="2010">2007</option>
+                    <option value="2010">2006</option>
+                    <option value="2010">2005</option>
+                    <option value="2010">2004</option>
+                    <option value="2010">2003</option>
+                    <option value="2010">2002</option>
+                    <option value="2010">2001</option>
+                    <option value="2010">2000</option>
+                </select>
+            </div>
+            <div class="admin-ui response-modulebox-2-1-r">
+                <div class="admin-ui inpurt-input-name">月份</div>
+                <select class="admin-ui inpurt-select" id="bangumi_playmonth">
+                    <option value="12">12</option>
+                    <option value="11">11</option>
+                    <option value="10">10</option>
+                    <option value="9">9</option>
+                    <option value="8">8</option>
+                    <option value="7">7</option>
+                    <option value="6">6</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                </select>
+            </div>
+        </div>
+        <div class="admin-ui inpurt-input-name">tag</div>
+        <div id="bangumi_tag"></div>
+        <div class="admin-ui br"></div>
+        <div class="admin-ui inpurt-input-name">CV</div>
+        <textarea name="" class="admin-ui inpurt-textarea" id="bangumi_cv"></textarea>
+        <div class="admin-ui inpurt-input-name">番剧介绍</div>
+        <textarea name="" class="admin-ui inpurt-textarea" id="bangumi_infos"></textarea>
+    </div>
+    <div class="bangumi-release page-wp-r-2">
+            <div class="admin-ui allwp-title">番剧设置</div>
+            <div class="admin-ui inpurt-input-name">放送状态</div>
+            <select class="admin-ui inpurt-select" id="playtype">
+                    <option value="1">连载中</option>
+                    <option value="0">已完结</option>
+            </select>
+            <div class="admin-ui inpurt-input-name">每周更新日</div>
+            <select class="admin-ui inpurt-select" id="bangumi_upload_wk">
+                    <option value="0">完结</option>
+                    <option value="1">星期1</option>
+                    <option value="2">星期2</option>
+                    <option value="3">星期3</option>
+                    <option value="4">星期4</option>
+                    <option value="5">星期5</option>
+                    <option value="6">星期6</option>
+                    <option value="7">星期7</option>
+            </select>
+            <div class="admin-ui inpurt-input-name">更新时间</div>
+            <input class="admin-ui inpurt-time" type="time" id="bangumi_uploads_time" />
+            <div class="admin-ui buttom-red" style="width: 100%;height: 50px;line-height: 50px;padding: 0;" id="release">发布该番剧</div>
+    </div>
+</div>
+<script>
+
+    $('#bangumi_tag').tagEditor();
+
+    //即时预览
+    $('#cover_file').change(
+        function () {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#viwe').attr('src', e.target.result)
+                }
+                reader.readAsDataURL($(this)[0].files[0]);
+            } else {
+                alert("你的破浏览器不支持FileReader.");
+            }
+        });
+
+    //获取tokne
+    $(document).ready(function () {
+        $('#uploadForm').change(
+            function () {
+                $.getJSON("/bangumi/release/api/get-coverupload-token/" + $("input[name='file']").prop('files')[0]['name'],
+                    function (data, textStatus) {
+                        $("input[name='token']").val(data['token'])
+                        $("input[name='key']").val(data['key'])
+                    });
+            });
+    });
+
+    $("#release").click(function () {
+        var token = $("#covertoken").val()
+        if (token == '') {
+                alert("请上传封面图")
+            } else {
+                upcover()
+            };
+        });
+
+    function upcover() {
+        $.ajax({
+            url: 'https://up-z2.qiniup.com',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#uploadForm')[0]),
+            processData: false,
+            contentType: false
+        }).done(function (res) {
+            $("#upload-type").text('上传成功')
+            var tagdata = $('#bangumi_tag').tagEditor('getTags')[0].tags;
+            $.ajax({
+                    type: "POST", //方式 可GET 或 POST
+                    url: "/bangumi/release/api/push",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        "bangumi_name": $("#bangumi_name").val(),
+                        "bangumi_nianfen": $("#bangumi_playyesr").val(),
+                        "month": $("#bangumi_playmonth").val(),
+                        "bangumi_playtype": $("#playtype").val(),
+                        "bangumi_uploads_wk": $("#bangumi_upload_wk").val(),
+                        "bangumi_uploads_time": $("#bangumi_uploads_time").val(),
+                        "bangumi_cv": $("#bangumi_cv").val(),
+                        "bangumi_infos": $("#bangumi_infos").val(),
+                        "bangumi_cover": $("#coverkey").val(),
+                        "bangumi_tag": tagdata,
+                    }),
+                    dataType: 'json',
+                    success: function (data) {
+                        alert('ok')
+                    }
+                });
+        }).fail(function (res) {
+            $("#upload-type").text('上传失败')
+        });
+    }
+</script>
+{% endblock %}

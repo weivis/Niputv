@@ -1,0 +1,155 @@
+{% extends "creation/frame.html" %}{% block content %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/creation/creation_video.css">
+
+<div class="unite-minpage-width video_management control unite-index-margintop none">
+    <div class="video_management control-leftnav" id="videolist_nav">
+        <div id="listnav-0" class="video_management control-leftnav-a control-leftnav-ahil">全部</div>
+        <div id="listnav-1" class="video_management control-leftnav-a">正在审核</div>
+        <div id="listnav-2" class="video_management control-leftnav-a">退回</div>
+    </div>
+    <div class="video_management control-right_search">
+        <form>
+            <input type="search" placeholder="搜索" style="width: calc(100% - 11px);height: 100%;border: 0;padding: 0; border: 1px solid #dfdfdf; border-radius: 5px;padding-left: 10px;float: right">
+        </form>
+    </div>
+</div>
+
+<style>
+    .video_management_list.more_poup {
+        display: none
+    }
+
+    .video_type {
+        font-size: 14px;
+        color: #0064ff;
+    }
+</style>
+<div class="unite-minpage-width video_management_list list" id="videolist">
+</div>
+<!--
+
+    <div class="video_management_list li">
+        <div class="video_management_list more_management">
+            <img src="more.png" style="width: inherit">
+        </div>
+        <div class="video_management_list more_poup">
+            <div class="video_management_list more_poup_li">编辑</div>
+            <div class="video_management_list more_poup_li">删除</div>
+        </div>
+        <div class="video_management_list li-video_cover">
+            <img src="1.png" height="100%">
+        </div>
+        <div class="video_management_list li-video_text">
+            <div class="video_management_list li-video_title">【境界的彼方】雏菊 [小一二P]</div>
+            <div class="video_management_list li-video_date">发布于 2015-03-08 19:59:46</div>
+            <div class="video_management_list li-video_videoinfo">自制 拜年祭单品，拿出来充实一下投稿列表。眼镜娘好可爱啊～绘图：水曜日</div>
+            <div class="video_management_list li-video_date">播放 4.3万 - 评论421条 - 点赞400</div>
+        </div>
+    </div>
+
+-->
+<script type="text/javascript">
+    function video_list(data) {
+        var videotype = data['video_status']
+        if (videotype == '1') {
+            videonew_tpye = '(审核中)'
+        }if (videotype == '0') {
+            videonew_tpye = ''
+        };
+        $("#videolist").prepend('<div class="video_management_list li">' +
+            '<div class="video_management_list more_management">' +
+            '<img src="/static/img/more.png" style="width: inherit">' +
+            '</div>' +
+            '<div class="video_management_list more_poup">' +
+            '<div class="video_management_list more_poup_li">编辑</div>' +
+            '<a href="api/del/' + data['video_id'] + '" target="_blank"><div class="video_management_list more_poup_li">删除</div></a>' +
+            '</div><a href="http://www.niputv.com/watch/' + data['video_id'] + '" target="_blank">' +
+            '<div class="video_management_list li-video_cover">' +
+            '<img src="http://pckkf57ve.bkt.clouddn.com/' + data['video_cover'] + '" height="100%">' +
+            '</div>' +
+            '<div class="video_management_list li-video_text">' +
+            '<div class="video_management_list li-video_title">' + data['video_name'] + '<span class="video_type">' + videonew_tpye +
+            '</span>' + '</div>' +
+            '<div class="video_management_list li-video_date">发布于 ' + data['release_date'] + ' ' + data[
+                'release_time'] + '</div>' +
+            '<div class="video_management_list li-video_videoinfo">' + data['video_introduction'] + '</div>' +
+            '<div class="video_management_list li-video_date">播放次数 ' + data['play_statistics'] + ' - ' + data[
+                'comment_statistics'] + '条评论 - ' + data['like_frequency'] + '人点赞 - ' + data['dislike_frequency'] +
+            '踩' + '</div>' +
+            '</div></a>' +
+            '</div>')
+    };
+
+    $.ajax({
+        type: "POST", //方式 可GET 或 POST
+        url: "creation-api/getvideo/0/name/None/page/0",
+        dataType: 'json',
+        success: function (data) {
+            $("#videolist").empty();
+            $.each((data.reverse()),
+                function () {
+                    video_list(this)
+                });
+        }
+    });
+
+    $("#listnav-0").click(
+        function get_open() {
+            $.ajax({
+                type: "POST", //方式 可GET 或 POST
+                url: "creation-api/getvideo/0/name/None/page/0",
+                dataType: 'json',
+                success: function (data) {
+                    $("#videolist").empty();
+                    $.each((data.reverse()),
+                        function () {
+                            video_list(this)
+                        });
+                }
+            });
+        });
+
+    $("#listnav-1").click(function () {
+        $.ajax({
+            type: "POST", //方式 可GET 或 POST
+            url: "creation-api/getvideo/1/name/None/page/0",
+            dataType: 'json',
+            success: function (data) {
+                $("#videolist").empty();
+                $.each((data.reverse()),
+                    function () {
+                        video_list(this)
+                    });
+            }
+        });
+    });
+
+    $("#listnav-2").click(function () {
+        $.ajax({
+            type: "POST", //方式 可GET 或 POST
+            url: "creation-api/getvideo/2/name/None/page/0",
+            dataType: 'json',
+            success: function (data) {
+                $("#videolist").empty();
+                $.each((data.reverse()),
+                    function () {
+                        video_list(this)
+                    });
+            }
+        });
+    });
+
+    $('#videolist_nav').find('.video_management.control-leftnav-a').click(function () {
+        // 为当前点击的导航加上高亮，其余的移除高亮
+        $(this).addClass('control-leftnav-ahil').siblings('.video_management.control-leftnav-a').removeClass(
+            'control-leftnav-ahil');
+    });
+
+    $(function () {
+        $('body').on('click', '.video_management_list.more_management', function () {
+            data = $(this).parent().find(".video_management_list.more_poup").toggle()
+        });
+    });
+</script>
+{% endblock %}

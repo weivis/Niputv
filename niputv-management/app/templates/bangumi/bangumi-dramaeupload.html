@@ -1,0 +1,165 @@
+{% extends "common/frame-no_leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .bangumi-edit-drama.page-wp {
+        width: 95%;
+        max-width: 1700px;
+        margin: 0 auto;
+        position: relative;
+        min-width: 950px;
+        margin-top: 20px;
+    }
+
+    .bangumi-edit-drama.page-wp-l {
+        width: 200px;
+        float: left
+    }
+
+    .bangumi-edit-drama.page-wp-r {
+        width: calc(100% - 240px);
+        float: left;
+        margin-left: 20px;
+    }
+</style>
+
+<div class="bangumi-edit-drama page-wp">
+    <div class="bangumi-edit-drama page-wp-l">
+        <img src="" id="bangumi-cover" width="100%">
+        <div class="admin-ui highlight-imput" id="bangumi-name" style="margin-top: 15px; background-color: #e0e0e0;"></div>
+    </div>
+    <div class="bangumi-edit-drama page-wp-r">
+        <form id="uploadForm" enctype=multipart/form-data>
+            <input name="key" type="hidden" value="" id="file_key">
+            <input name="token" type="hidden" value="">
+            <input name="file" type="file" />
+            <input name="accept" type="hidden" />
+        </form>
+        <p>上传token:
+            <a id="uploadtoken"></a>
+        </p>
+        <p>生成key:
+            <a id="uploadkey"></a>
+        </p>
+        <p>原文件:
+            <a id="uploadname"></a>
+        </p>
+        <p>文件格式:
+            <a id="uploadtype"></a>
+        </p>
+        <p>视频上传进度:
+            <a id="process_video"></a>
+        </p>
+        <button type="button" id="upload">Upload</button>
+        <br>
+        <br>
+        <div class="admin-ui response-modulebox-1">
+                <div class="admin-ui response-modulebox-2-1-l">
+                    <div class="admin-ui inpurt-input-name">剧集名</div>
+                    <input class="admin-ui inpurt-input" id="bangumi_name">
+                </div>
+                <div class="admin-ui response-modulebox-2-1-r">
+                    <div class="admin-ui inpurt-input-name">剧集数</div>
+                    <input type="number" class="admin-ui inpurt-input" name="MinHours"value=@ViewBag.minhour text=@ViewBag.minhour id="bangumi_sort" />
+                </div>
+        </div>
+        <div class="admin-ui inpurt-input-name">请在视频上传完成后发布</div>
+        <div class="admin-ui buttom-red" id="video_plus">发布</div>
+    </div>
+</div>
+<script>
+    $('#video_plus').data('uptype','true')
+
+    var str = window.location.href;
+    var index = str.lastIndexOf("\/");
+    str = str.substring(index + 1, str.length);
+
+    function getinfo() {
+        $.getJSON('/bangumi/edit/api/id/' + str,
+            function (data, textStatus) {
+                $("#bangumi-cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' + data['cover'])
+                $("#bangumi-name").html(data['name'])
+            });
+    }
+    getinfo();
+
+    $('#uploadForm').change(
+        function () {
+            $.getJSON("api/video-token?filename=" + $("input[name='file']").prop('files')[0]['name'],
+                function (data, textStatus) {
+                    if (data['code'] == 0){
+                        $("input[name='token']").val(data['token'])
+                        $("input[name='key']").val(data['key'])
+                        $('#uploadtoken').text(data['token'])
+                        $('#uploadkey').text(data['key'])
+                        $('#uploadname').text(data['filename'])
+                        $('#uploadtype').text(data['filetype'])
+                    }else{
+                        alert('文件名无法解析')
+                    }
+                });
+        });
+
+    $("#upload").click(
+        function () {
+            $("#video_plus").data("uptype","false")
+            // 上传视频到七牛云
+            $('#process_video').text('正在上传')
+            $.ajax({
+                url: 'https://upload-z2.qiniup.com',
+                type: 'POST',
+                cache: false,
+                data: new FormData($('#uploadForm')[0]),
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', function (e) {
+                            if (e.lengthComputable) {
+                                var percent = Math.floor(e.loaded / e.total * 100);
+                                if (percent <= 100) {
+                                    $("#process_video").html('已上传：' + percent + '%');
+                                }
+                                if (percent >= 100) {
+                                    $("#process_video").html('文件上传完毕，请等待...');
+                                }
+                            }
+                        }, false);
+                    }
+                    return myXhr;
+                },
+            }).done(function (res) {
+                $('#process_video').text('上传完成')
+                $('#video_plus').data('uptype','true')
+            }).fail(function (res) {
+                $('#process_video').text('上传失败')
+                $('#video_plus').data('uptype','no')
+            });
+        });
+
+    $('#video_plus').click(function () {
+        var uptype = $("#video_plus").data("uptype")
+        alert($("#file_key").val())
+        if (uptype == "true"){
+            alert("发布中")
+            $.ajax({
+            type: "POST",
+            url: "api/push",
+            cache: false,
+            data: {
+                "file_key":$("#file_key").val(),
+                "bangumi_id":str,
+                "drama_name":$("#bangumi_name").val(),
+                "drama_sort":$("#bangumi_sort").val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert('发布成功')
+            }
+        });
+        }else{
+            alert("未有上传完成的文件")
+        }
+    })
+</script>
+{% endblock %}

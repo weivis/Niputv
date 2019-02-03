@@ -1,0 +1,13 @@
+.subdivision-header.header{height: 50px;width: 100%}
+.subdivision-header.header-ico{float: left;height: 50px;background-color: #ed001c;padding-right: 15px;min-width: 100px;margin-right: 15px;}
+.subdivision-header.header-ico-box{width: 50px;height: 50px;float: left;position: relative}
+.subdivision-header.header-ico_img{position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto}
+.subdivision-header.nav-a{float: left;padding-left: 15px;padding-right: 15px;font-size: 14px;float: left;height: 50px;line-height: 50px;color: #b3b3b3;}
+.subdivision-header.nav-a_hid{color: #000}
+.subdivision-header.nav-title{float: left;line-height: 50px;color: #fff}
+
+.subdivision.video_filter{width: 100%;margin-top: 55px;padding-bottom: 20px;border-bottom: 1px solid #cecece}
+.subdivision.video_filter_select{width: 100%;height: 25px;}
+.subdivision_video_filter_select.title{float: left;font-size: 14px;line-height: 25px;margin-right: 20px;}
+.subdivision_video_filter_select.select{float: left;padding-left: 15px;padding-right: 15px;height: 25px;line-height: 25px;font-size: 14px;color: #898989}
+.subdivision_video_filter_select.nav-a_hid{color: #0093ff}

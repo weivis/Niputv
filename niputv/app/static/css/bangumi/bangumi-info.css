@@ -1,0 +1,56 @@
+.bangumi-bigtop.main{width: 100%;height: 466px;overflow: hidden;position: relative}
+.bangumi-bigtop.background{background-size:100%;background-repeat: no-repeat; background-position: 0px 10%;width: 100%;height: 100%;position: absolute;z-index: 1;top: 0;bottom: 0;left: 0;right: 0}
+.bangumi-top.content-min{max-width: 1530px;width: 95%;height: 376px;position: absolute;z-index: 2;left: 0;right: 0;top: auto;bottom: 20px;margin: auto;min-width: 1230px;}
+.bangumi-top.content-cover{float: left;width: 255px;position: absolute;left: 15px;top: 0;z-index: 2;overflow: hidden;border-radius: 3px;height: 360px;}
+.bangumi-top.content-bottom{width: 100%;height: 160px;position: absolute;bottom: 0;background-color: #ffffff99;z-index: 1;border-radius: 4px;box-shadow: 0px 5px 5px #0000000d;}
+.bangumi-top.content-title{width: calc(100% - 285px);position: absolute;right: 0;bottom: 175px;}
+.bangumi-top.content-bottom-li1{width: 100%;height: 67px;border-bottom: 1px solid #9a9a9a}
+.bangumi-top.content-bottom-li1-l{float: left;height: 100%;}
+.bangumi-top.content-bottom-li1-r{float: right;height: 100%}
+.bangumi-top.content-bottom-li1-tag-box{height: 22px;width: 100%;margin-top: 12px;}
+.bangumi-tag.tag-a{padding-left: 15px;padding-right: 15px;height: 22px;border: 1px solid #bbbbbb;border-radius: 50px;float: left;font-size: 14px;line-height: 22px;}
+.bangumi-Introduction.main{width: 100%;font-size: 14px;margin-top: 30px;}
+
+.bangumi-top.content-bottom-r{float: right;width: calc(100% - 300px);height: calc(100% - 30px);margin-right: 15px;margin-top: 15px;}
+
+.bangumi-top.content-bottom-r-count{float: right;margin-top: 5px;font-size: 14px;text-align: center;margin-left: 40px;}
+
+.bangumi-top.content-bottom-subbangumi{min-width: 100px;height: 45px;background-color: #ff1d5d;float:left;border-radius: 3px; font-size: 18px;color: #fff;font-weight: bold;text-align: center;line-height: 45px;}
+
+.pu-videomoudle.main{width: 100%;margin-bottom: 50px;margin-top: 10px;}
+.pu-videomoudle.main-title{width: 100%;height: 60px;line-height: 60px;font-size: 18px;color: #767676;font-weight: bold}
+.pu-videomoudle.videolist{width: 100%;overflow: hidden}
+
+.pu-videomoudle_video.a{width: 215px;float: left;margin-right: 41px;margin-bottom: 25px;}
+.pu-videomoudle_video.a:nth-child(6n){margin-right: 0px}
+@media screen and (max-width:1800px ) {
+    .pu-videomoudle_video.a{width: 214px;float: left;margin-right: 12px;}
+    .pu-videomoudle_video.a:nth-child(6n){margin-right: 0px}
+}
+
+@media screen and (max-width:1630px ) {
+    .pu-videomoudle_video.a{width: 215px;float: left;margin-right: 37px;}
+    .pu-videomoudle_video.a:nth-child(5n){margin-right: 0px}
+    .pu-videomoudle_video.a:nth-child(6n){margin-right: 37px}
+}
+
+@media screen and (max-width:1450px ) {
+    .pu-videomoudle_video.a{width: 215px;float: left;margin-right: 37px;}
+    .pu-videomoudle_video.a:nth-child(5n){margin-right: 0px}
+    .pu-videomoudle_video.a:nth-child(6n){margin-right: 37px}
+    
+}
+
+.pu-videomoudle_video.cover{width: 100%;height: 121px;overflow: hidden;border: 1px solid #cecece;border-radius: 5px;overflow: hidden}
+.pu-videomoudle_video.title{width: 100%;font-size: 14px;margin-top: 5px;color: #000;}
+.pu-videomoudle_video.videopsc{width: 100%;font-size: 14px;margin-top: 5px;color: #717171}
+.blur {	
+    filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
+    
+    -webkit-filter: blur(10px); /* Chrome, Opera */
+       -moz-filter: blur(10px);
+        -ms-filter: blur(10px);    
+            filter: blur(10px);
+    
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false); /* IE6~IE9 */
+}

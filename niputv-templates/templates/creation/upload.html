@@ -1,0 +1,278 @@
+{% extends "creation/frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/lib/tag-editor/jquery.tag-editor.css">
+<script type="text/javascript" src="/static/lib/tag-editor/jquery.tag-editor.js"></script>
+<div id="page1">
+    <div class="unite-minpage-width video_management control unite-index-margintop none">
+        <div>
+            <span>选择要上传的视频文件</span>
+            <br>
+            <form id="uploadForm" enctype=multipart/form-data> <input name="key" type="hidden" value="" id="video_key">
+                <input name="token" type="hidden" value="" id="video_token">
+                <input name="file" type="file" />
+                <input name="accept" type="hidden" />
+            </form>
+            <br>
+            <button type="button" id="upload">确定</button>
+        </div>
+    </div>
+</div>
+<div id="page2" style="display: none;">
+    <div class="unite-minpage-width video_management control unite-index-margintop none">
+        <div id="process_video"></div>
+        <div>
+            <div id="datadiv-uploadtype"></div>
+            <div id="datadiv-covertype"></div>
+        </div>
+        <br>
+        <div>
+            <span>封面图上传</span><br>
+            <img id="viwe" width="300px" height="230px" alt="封面图即时预览"><br>
+            <form id="uploadForm_cover" enctype=multipart/form-data> <br>
+                <input name="key" type="hidden" value="" id="cover_key">
+                <input name="token" type="hidden" value="" id="cover_token">
+                <input name="file" type="file" id="cover_file" />
+                <input name="accept" type="hidden" />
+            </form>
+        </div>
+        <br>
+        <select id="category">
+            <option value="none">请选择</option>
+        </select>
+        <select id="subdivision">
+            <option value="none">请选择</option>
+        </select>
+        <br>
+        <input type="text" id="video_title" style="width: 100%;">
+        <textarea name="video-introduction" id="video-introduction" style="height: 100px" placeholder="视频介绍"></textarea>
+        <input type="text" id="reprint" style="width: 100%;">
+        <br>
+        <div id="tags"></div>
+        <br>
+        <button id="release">发布</button>
+    </div>
+</div>
+<script>
+
+    //绑定tag编辑框
+    $('#tags').tagEditor();
+
+    //视频封面图可视化
+    $('#cover_file').change(
+        function () {
+
+            if (typeof (FileReader) != "undefined") {
+                var image_holder = $("#viwe");
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#viwe').attr('src', e.target.result)
+                }
+                reader.readAsDataURL($(this)[0].files[0]);
+            } else {
+                alert("你的破浏览器不支持FileReader.");
+            }
+
+            var coverfile_name = $("#cover_file").prop('files')[0]['name']
+            var coverkey = $("#cover_key").val()
+            //拉取封面上传许可证
+            $.getJSON("cover-upload-token?filename=" + coverfile_name + "&key=" + coverkey,
+                function (data, textStatus) {
+                    console.log(data)
+                    $("#cover_token").val(data['covertoken']);
+                    $("#cover_key").val(data['key']);
+                    $("#datadiv-covertype").data("covertype","false")
+                });
+        });
+
+    //更改上传后获取上传文件的token
+    $('#uploadForm').change(
+        function () {
+            $.getJSON("video-upload-token?filename=" + $("input[name='file']").prop('files')[0]['name'],
+                function (data, textStatus) {
+                    console.log(data)
+                    if (data['code'] == "ok") {
+                        //初始化上传状态
+                        $("#datadiv-uploadtype").data("uploadtype","false")
+
+                        //写入上传密匙
+                        $("#video_key").val(data['key'] + '.' + data['filetype'])
+                        $("#video_token").val(data['uploadtoken']);
+
+                        //封面参数
+                        $("#cover_key").val(data['key'])
+
+                        console.log("成功获取上传token")
+                    } else {
+                        alert(data['text'])
+                    }
+                });
+        });
+
+    //上传视频到七牛
+    $("#upload").click(
+        function () {
+            $("#page1").hide();
+            $("#page2").show();
+            // 上传视频到七牛云
+            $('#process_video').text('正在上传')
+            var category_sel = $("#category").val()
+            if (category_sel == 'none') {
+                get_main_category();
+            };
+            $.ajax({
+                url: 'https://upload-z2.qiniup.com',
+                type: 'POST',
+                cache: false,
+                data: new FormData($('#uploadForm')[0]),
+                processData: false,
+                contentType: false,
+                xhr: function () {
+                    myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', function (e) {
+                            if (e.lengthComputable) {
+                                var percent = Math.floor(e.loaded / e.total * 100);
+                                if (percent <= 100) {
+                                    $("#process_video").html('已上传：' + percent + '%');
+                                }
+                                if (percent >= 100) {
+                                    $("#process_video").html(
+                                        '文件上传完毕，请等待...');
+                                }
+                            }
+                        }, false);
+                    }
+                    return myXhr;
+                },
+            }).done(function (res) {
+                //上传成功
+                console.log("上传成功")
+                $("#process_video").html("上传成功");
+                cache_uploadover()
+            }).fail(function (res) {
+                //上传失败
+                console.log("上传失败")
+            });
+        });
+
+    //记录上传完成
+    function cache_uploadover() {
+        $("#datadiv-uploadtype").data("uploadtype","true")
+        console.log("成功记录已上传完成状态")
+    }
+
+    //获取主分区选项
+    function get_main_category() {
+        $.ajax({
+            type: "post",
+            url: "get_main_category", //此次url改为真正需要的url
+            success: function (data, status) {
+                //$("#category").empty();
+                $.each($.parseJSON(data), function (index, item) {
+                    $("#category").append( //此处向select中循环绑定数据
+                        "<option value=" + item.id + ">" + item.name + "</option>");
+                });
+            },
+        });
+    }
+
+    //选中的主分区=>子分区拉取
+    $('#category').change(
+        function () {
+            $.ajax({
+                type: "post",
+                url: "get_sub_category?classid=" + $("#category").val(), //此次url改为真正需要的url
+                success: function (data, status) {
+                    $("#subdivision").empty();
+                    $.each($.parseJSON(data), function (index, item) {
+                        $("#subdivision").append( //此处向select中循环绑定数据
+                            "<option value=" + item.id + ">" + item.name +
+                            "</option>");
+                    });
+                },
+            });
+        }
+    )
+
+    //发布视频
+    $('#release').click(function () {
+        var uploadtype = $("#datadiv-uploadtype").data("uploadtype")
+        if (uploadtype == "true") {
+            console.log("上传状态:" + uploadtype)
+            if ($("#cover_file").val() == '') {
+                //不存在封面
+                console.log("不存在封面")
+                plusvideorsdata()
+            } else {
+                //存在封面
+                console.log("存在封面")
+                //formData.append("name", "cover");
+                $.ajax({
+                    url: 'https://up-z2.qiniup.com',
+                    type: 'POST',
+                    cache: false,
+                    data: new FormData($('#uploadForm_cover')[0]),
+                    processData: false,
+                    contentType: false
+                }).done(function (res) {
+                    $("#datadiv-covertype").data("covertype","true")
+                    plusvideorsdata()
+
+                }).fail(function (res) {
+                    $("#upload-type").text('上传失败')
+                    $("#datadiv-covertype").data("covertype","false")
+                });
+            }
+        } else {
+            console.log("上传状态:" + uploadtype + "不存在已上传完成的视频文件")
+        }
+    })
+
+    //发送发布数据
+    function plusvideorsdata() {
+        console.log("执行推送视频信息")
+        console.log("获取到的类型"+$("#datadiv-covertype").data("covertype"))
+        coverType = $("#datadiv-covertype").data("covertype")
+        if (coverType == "true") {
+            var coverupload = true
+            var cover_key = $("#cover_key").val()
+            console.log("存在封面")
+        } else {
+            var coverupload = false
+            var cover_key = ''
+            console.log("不存在封面")
+        }
+
+        var video_title = $("#video_title").val() //视频标题
+        var video_introduction = $("#video-introduction").val() //视频信息
+        var category = $('#category').val() //主分类
+        var subdivision = $('#subdivision').val() //子分类
+        var reprint = $('#reprint').val() //是否转载
+
+        var tagdata = $('#tags').tagEditor('getTags')[0].tags;
+
+	     $.ajax({
+	        type: "post",
+	        dataType: 'json',
+	        contentType: "application/json; charset=utf-8",
+	        url: "release",
+	        cache: false,
+	        data: JSON.stringify({
+	            "video_key": $("#video_key").val(),
+	            "cover_key": cover_key,
+	            "covertype": coverupload,
+	            "category": category,
+	            "subdivision": subdivision,
+	            "video_title": video_title,
+	            "video_introduction": video_introduction,
+	            "reprint": reprint,
+	            "tag": tagdata,
+	        }),
+	        success: function (data) {
+	            alert(data['type'])
+	        }
+	    });
+	     
+    }
+
+</script>
+{% endblock %}

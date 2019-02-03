@@ -1,0 +1,95 @@
+<div id="bangumi">
+    <link rel="stylesheet" href="/static/css/main/index-bangumi.css">
+    <div id="bangumi-wp" style="margin-top: 20px;">
+
+        <div class="module-interchangeable-indexvideo title">
+            <div class="module-interchangeable-indexvideo ico">
+                <div style="background: #00000000 url(/static/img/ico.png) 0px -35px no-repeat" class="module-interchangeable-indexvideo ico_img"></div>
+            </div>
+            <span class="module-interchangeable-indexvideo module_titile">热门新番</span>
+            <a class="module-interchangeable-indexvideo more_link" href="/bangumi" target="_blank">番剧></a>
+        </div>
+
+        <div class="bangumi-anime frame" style="margin-top: 15px;">
+            <div class="bangumi-anime nav" id="bangumi_tabnav">
+                <li class="bangumi-anime nav-a bangumi-anime-nav-hover">
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">正在连载</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周一</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周二</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周三</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周四</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周五</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周六</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="bangumi-anime nav-a">
+                        <div class="bangumi-anime nav-a_title">周日</div>
+                    </div>
+                </li>
+            </div>
+            <div id="bangumi_tabcontent" style="float:left">
+                <ul id="bangumi-all" class="bangumi-anime content" style="display:block;">
+                </ul>
+                <ul class="bangumi-anime content" id="bangumi-1day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-2day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-3day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-4day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-5day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-6day"></ul>
+                <ul class="bangumi-anime content" id="bangumi-7day"></ul>
+                <!--                    <div class="bangumi-anime content_a">
+                        <div class="bangumi-anime content_a-img">
+                            <img src="" width="100%">
+                        </div>
+                        <div class="bangumi-anime content_a-name">
+                            龙王的老婆
+                        </div>
+                        <div class="bangumi-anime content_a-newvideopcs">更新到第{pcs}话</div>
+                    </div>-->
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            var oLi = document.getElementById("bangumi_tabnav").getElementsByTagName("li");
+            var oUl = document.getElementById("bangumi_tabcontent").getElementsByTagName("ul");
+
+            for (var i = 0; i < oLi.length; i++) {
+                oLi[i].index = i;
+                oLi[i].onclick = function () {
+                    for (var n = 0; n < oLi.length; n++) oLi[n].className = "bangumi-anime nav-a";
+                    this.className = "bangumi-anime nav-a bangumi-anime-nav-hover";
+                    for (var n = 0; n < oUl.length; n++) oUl[n].style.display = "none";
+                    oUl[this.index].style.display = "block";
+                }
+            }
+        }
+    </script>
+    <script src="/static/js/api/index/index-bangumi.js"></script>
+</div>

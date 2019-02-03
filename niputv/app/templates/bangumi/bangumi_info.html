@@ -1,0 +1,202 @@
+{% extends "common/min_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/bangumi/bangumi-info.css">
+<style>
+    .unite-index-width {
+        min-width: 1225px;
+    }
+    .bangumi-tag.tag-a{
+        margin-right: 10px;
+        border: 1px solid #ffffff;
+        color: #fff;
+    }
+</style>
+<div class="bangumi-bigtop main" style="margin-top: 70px;">
+
+    <div class="bangumi-top content-min">
+        <div class="bangumi-top content-cover">
+            <img id="json-cover" src="2.jpg" height="100%">
+        </div>
+        <div class="bangumi-top content-title">
+            <div style="font-size: 24px;color: #fff;float: left;width: 100%;text-shadow: black 0em 0em 0.2em" id="json-name">加载失败</div>
+            <div style="font-size: 14px;color: #fff;float: left;width: 100%;margin-top: 5px;text-shadow: black 0em 0em 0.2em" id="json-bangumiinfo"></div>
+        </div>
+
+        <div class="bangumi-top content-bottom">
+            <div class="bangumi-top content-bottom-r">
+                <div class="bangumi-top content-bottom-li1">
+                    <div class="bangumi-top content-bottom-li1-l">
+                        <div style="width: 100%;font-size: 14px;width: 100%">
+                            <span style="font-size: 14px;color: #000;font-weight: bold">角色声优</span>：
+                            <span id="json-cv">加载失败</span>
+                        </div>
+                        <div class="bangumi-top content-bottom-li1-tag-box" id="bangumi-tag">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px;width: 100%;height: 45px;">
+                    <div class="bangumi-top content-bottom-subbangumi" id="subbangumi">追番</div>
+                    <div class="bangumi-top content-bottom-li1-r">
+                        <div class="bangumi-top content-bottom-r-count">
+                            <div style="font-weight: bold;" id="json-sub_statistics">加载失败</div>
+                            <div>追番人数</div>
+                        </div>
+                        <div class="bangumi-top content-bottom-r-count">
+                            <div style="font-weight: bold;" id="json-play_statistics">加载失败</div>
+                            <div>播放数</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div style="background-image: url(2.jpg);" class="bangumi-bigtop background blur" id="background_cover"></div>
+</div>
+
+
+<div class="unite-index-width">
+    <div class="bangumi-Introduction main">
+        <span style="font-size: 14px;font-weight: bold;color: #767676;">简介</span>:
+        <span id="json-introduction">加载失败</span>
+    </div>
+    <div class="pu-videomoudle videolist">
+        <div class="pu-videomoudle main">
+            <div class="pu-videomoudle main-title">
+                1-10集
+            </div>
+            <div class="pu-videomoudle videolist" id="bangumi-videolist">
+            </div>
+            <!--
+            <a href="" target="_blank">
+                    <div class="pu-videomoudle_video a">
+                        <div class="pu-videomoudle_video cover">
+                            <img src="1.png" width="100%">
+                        </div>
+                        <div class="pu-videomoudle_video videopsc">第1话</div>
+                        <div class="pu-videomoudle_video title">STAGE01 青春百万円</div>
+                    </div>
+                </a>
+            -->
+        </div>
+    </div>
+</div>
+<script>
+    var str = window.location.href;
+    var index = str.lastIndexOf("\/");
+    str = str.substring(index + 1, str.length);
+
+    function wirtag(data) {
+        $("#bangumi-tag").prepend('<div class="bangumi-tag tag-a">'+ data['tag'] +'</div>')
+    }
+
+    $.getJSON('/bangumi/api/bangumi-info/' + str,
+        function (data, textStatus) {
+
+            //设置页面名称
+            var newtitle = data['name'] + ' - ' + '番剧区' + ' - ' + 'NipuTV视频';
+            document.title = newtitle;
+
+            if (data['status'] == 0) {
+                var bangumiinfo = data['year'] + '年开播 已完结'
+            } else {
+                if (data['uploads_week'] == "7") {
+                    var uploads_week = '日'
+                } else {
+                    var uploads_week = data['uploads_week']
+                }
+                var bangumiinfo = data['year'] + '年' + data['month'] + '月 开播 连载中, 每周' + uploads_week + ' ' + data[
+                    'uploads_time'] + '更新'
+            }
+            $("#json-bangumiinfo").html(bangumiinfo)
+
+            $("#json-name").html(data['name'])
+            $("#json-play_statistics").html(data['play_statistics'])
+            $("#json-sub_statistics").html(data['sub_statistics'])
+            $("#json-introduction").html(data['introduction'])
+            $("#json-cv").html(data['cv'])
+            $("#background_cover").attr("style", 'background-image : url(' +
+                'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' + data['cover'] + ');')
+            $("#json-cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' + data['cover'])
+
+            $.each((data['tag']),
+            function () {
+                wirtag(this)
+            });
+
+            getvideolist()
+
+        });
+
+    function videolist(data) {
+        $("#bangumi-videolist").prepend('<div class="pu-videomoudle_video a">'+
+                        '<a href="/bangumi/watch/'+ data ['id'] +'" target="_blank">'+
+                            '<div class="pu-videomoudle_video cover">'+
+                                '<img src="http://pckkf57ve.bkt.clouddn.com/bangumi/video/cover/'+ data['cover'] +'" width="100%">'+
+                            '</div>'+
+                        '<div class="pu-videomoudle_video videopsc">第'+data['video_sort']+'话</div>'+
+                        '<div class="pu-videomoudle_video title">'+data['video_name']+'</div>'+
+                        '</a></div>')
+    };
+
+    function getvideolist() {
+        $.getJSON('/bangumi/api/bangumi-videolist/' + str,
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        videolist(this);
+                    });
+            });
+    }
+
+    $("#subbangumi").click(
+        function(){
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: "/api/bangumi/follow-bangumi",
+                data: JSON.stringify({
+                    'bangumi': str
+                }),
+                success: function (data) {
+                    if (data['code'] == 'addsub'){
+                        alert('订阅成功')
+                        $("#subbangumi").html("已订阅")
+                    }else if(data['code'] == 'delsub'){
+                        alert('取消订阅')
+                        $("#subbangumi").html("追番")
+                    }else if(data['code'] == 10086){
+                        $("#subbangumi").html("请先登陆")
+                    }else{
+                        alert('系统出错')
+                    }
+                },
+            });
+        }
+    )
+
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: "/api/bangumi/follow-bangumi-type",
+                data: JSON.stringify({
+                    'bangumi': str
+                }),
+                success: function (data) {
+                    if (data['code'] == true){
+                        $("#subbangumi").html("已订阅")
+                    }else if(data['code'] == false){
+                        $("#subbangumi").html("追番")
+                    }else if(data['code'] == 10086){
+                        $("#subbangumi").html("请登陆")
+                    }else{
+                        alert('系统出错')
+                    }
+                },
+            });
+</script>
+{% endblock %}

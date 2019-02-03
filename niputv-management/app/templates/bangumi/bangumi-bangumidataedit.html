@@ -1,0 +1,88 @@
+{% extends "common/frame-no_leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .bangumi-edit-drama.page-wp {
+        width: 95%;
+        max-width: 1700px;
+        margin: 0 auto;
+        position: relative;
+        min-width: 950px;
+        margin-top: 20px;
+    }
+
+    .bangumi-edit-drama.page-wp-l {
+        width: 200px;
+        float: left
+    }
+
+    .bangumi-edit-drama.page-wp-r {
+        width: calc(100% - 240px);
+        float: left;
+        margin-left: 20px;
+    }
+
+</style>
+
+<div class="bangumi-edit-drama page-wp">
+    <div class="bangumi-edit-drama page-wp-l">
+        <img src="" id="bangumi-cover" width="100%">
+    </div>
+    <div class="bangumi-edit-drama page-wp-r">
+		<div class="admin-ui response-modulebox-1">
+                <div class="admin-ui response-modulebox-2-1-l">
+                    <div class="admin-ui inpurt-input-name">剧集名</div>
+                    <input class="admin-ui inpurt-input" id="bangumi_name" value="">
+                </div>
+                <div class="admin-ui response-modulebox-2-1-r">
+                    <div class="admin-ui inpurt-input-name">剧集数</div>
+                    <input type="number" class="admin-ui inpurt-input" name="MinHours" value="@ViewBag.minhour" text="@ViewBag.minhour" value="" id="bangumi_sort">
+                </div>
+        </div>
+        <div class="admin-ui response-modulebox-1">
+        	<div class="admin-ui inpurt-input-name">番剧介绍</div>
+        	<input class="admin-ui inpurt-input" id="bangumi_info" value="">
+        </div>
+        <div class="admin-ui response-modulebox-1">
+        	<div class="admin-ui inpurt-input-name">CV</div>
+        	<input class="admin-ui inpurt-input" id="bangumi_cv" value="">
+        </div>
+        <div class="admin-ui buttom-red" id="data_plus">发布</div>
+    </div>
+</div>
+<script>
+    var str = window.location.href;
+    var index = str.lastIndexOf("\/");
+    str = str.substring(index + 1, str.length);
+
+    function getinfo() {
+        $.getJSON('/bangumi/edit/api/id/' + str,
+            function (data, textStatus) {
+                $("#bangumi-cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' + data['cover'])
+                $("#bangumi_name").val(data['name'])
+                $("#bangumi_sort").val(data['video_statistics'])
+                $("#bangumi_info").val(data['introduction'])
+                $("#bangumi_cv").val(data['cv'])
+            });
+    }
+    getinfo();
+
+    $('#data_plus').click(function () {
+            $.ajax({
+            type: "POST",
+            url: "/bangumi/edit/data/{{bangumiid}}",
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                "name":$("#bangumi_name").val(),
+                "sort":$("#bangumi_sort").val(),
+                "info":$("#bangumi_info").val(),
+                "cv":$("#bangumi_cv").val(),
+            }),
+            dataType: 'json',
+            success: function (data) {
+                alert('发布成功')
+            }
+        });
+    })
+</script>
+{% endblock %}

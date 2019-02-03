@@ -1,0 +1,149 @@
+{% extends "common/min_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/watch/videoplay.css">
+<style>
+    .frame-common-header {
+        position: relative;
+    }
+    .move-videolist.li{margin-bottom: 0px;}
+    #videopage_r {
+        width: 415px;
+    }
+
+    .move-videolist.cover{width: 45%;height: initial;}
+    .move-videolist.info{width: 50%;}
+    #bangumi-videolist::-webkit-scrollbar{ width: 10px; }
+    #bangumi-videolist::-webkit-scrollbar-thumb{width: 10px;background-color: #c7c7c7;border-radius: 300px;height: 30px;}
+</style>
+<div data-info="{{bangumi_id}}" id="videodata"></div>
+<div data-key="{{key}}" id="videokey"></div>
+<div id="videopage-wp" style="margin-top: 20px;">
+    <div style="overflow: hidden; box-shadow: 0px 5px 5px #d4d4d4; background-color: #fff;position: relative;">
+        <div style="height: calc(100% - 40px);padding: 20px;float: right;position: absolute;right: 0;top: 0;bottom: 0;" id="player_r_more">
+            <div style="font-size: 14px;font-weight: bold;border-bottom: 1px solid #cacaca;padding-bottom: 20px;" id="playbanguminame"></div>
+            <div style="margin-top: 15px;height:calc(100% - 60px);overflow-y: auto;" id="bangumi-videolist"></div>
+        </div>
+        <div id="videopage_l">
+            <div id="player" style="object-fit: fill;">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .player-bangumi-info{width: 100%;border-bottom: 1px solid #cacaca;overflow: hidden;padding-bottom: 15px;}
+    .player-bangumi-info-c.cover{float: left;width: 128px;height: 180px;}
+    .player-bangumi-info-c.content{float: right;width: calc(100% - 153px);}
+    .player-bangumi-info-c.content-title{font-size: 18px;color: #000;font-weight: bold;width: 100%;height: 33px;}
+    .player-bangumi-info-c.content-info{font-size: 14px;color: #000;width: 100%;height: 102px;}
+    .player-bangumi-info-c.content-input{width: 100%;height: 45px;}
+    .player-bangumi-info-c.content-input-subbutton{width: 127px;height: 100%;background-color: #f7005d;color: #fff;font-size: 18px;font-weight: bold;line-height: 45px;text-align: center;border-radius: 4px;float: left;}
+</style>
+<div id="videopage-wp" style="margin-top: 30px;overflow: hidden;padding-bottom: 50px">
+    <div class="player-bangumi-info">
+        <div class="player-bangumi-info-c cover">
+            <img src="" id="bangumiinfo-cover" height="100%">
+        </div>
+        <div class="player-bangumi-info-c content">
+            <div class="player-bangumi-info-c content-title" id="bangumi-name"></div>
+            <div class="player-bangumi-info-c content-info" id="bangumi-info"></div>
+            <div class="player-bangumi-info-c content-input">
+                <div class="player-bangumi-info-c content-input-subbutton" id="subbangumi">追番</div>
+                <div id="bangumi-type" style="float: left;font-size: 14px;margin-left: 25px;line-height: 45px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script>
+    var videoinfo = $("#videodata").data("info")
+
+    $.getJSON('http://activity.niputv.com/api/bangumi/count/' + videoinfo['id'] + "/" + returnCitySN["cip"],
+        function (data, textStatus) {
+            false
+        });
+
+    $.getJSON('/bangumi/api/bangumi-info/' + videoinfo['bangumi_id'],
+        function (data, textStatus) {
+            $("#bangumi-type").html("共"+data['sub_statistics']+"人追了该番剧 播放"+data['play_statistics']+"次")
+            $("#bangumiinfo-cover").attr("src","http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/"+data['cover'])
+            $("#playbanguminame").html("正在播放 " + data['name'] + " 第 " + videoinfo['sort'] + "话")
+            $("#bangumi-name").html(data['name'])
+            $("#bangumi-info").html(data['introduction'])
+        });
+
+    var filevar = "/bangumi/"
+    getvideolist()
+
+    function videolist(data) {
+        $("#bangumi-videolist").prepend('<a href="/bangumi/watch/' + data['id'] + '">' +
+            '<div class="move-videolist li">' +
+            '<img class="move-videolist cover" src="http://pckkf57ve.bkt.clouddn.com/bangumi/video/cover/' + data[
+                'cover'] + '">' +
+            '<div class="move-videolist info">' +
+            '<div class="move-videolist info-title" style="height: 20px;">第' + data['video_sort'] + '话</div>' +
+            '<div class="move-videolist info-title" style="color: #000;font-size: 14px;">' + data['video_name'] +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</a>')
+    };
+
+    function getvideolist() {
+        $.getJSON('/bangumi/api/bangumi-videolist/' + videoinfo['bangumi_id'],
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        videolist(this);
+                    });
+            });
+    }
+
+    $("#subbangumi").click(
+        function(){
+            $.ajax({
+                type: "post",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: "/api/bangumi/follow-bangumi",
+                data: JSON.stringify({
+                    'bangumi': videoinfo['bangumi_id']
+                }),
+                success: function (data) {
+                    if (data['code'] == 'addsub'){
+                        alert('订阅成功')
+                        $("#subbangumi").html("已订阅")
+                    }else if(data['code'] == 'delsub'){
+                        alert('取消订阅')
+                        $("#subbangumi").html("追番")
+                    }else if(data['code'] == 10086){
+                        alert('请先登陆')
+                    }else{
+                        alert('出现未知错误')
+                    }
+                },
+            });
+        }
+    )
+
+    $.ajax({
+                type: "post",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                url: "/api/bangumi/follow-bangumi-type",
+                data: JSON.stringify({
+                    'bangumi': videoinfo['bangumi_id']
+                }),
+                success: function (data) {
+                    if (data['code'] == true){
+                        $("#subbangumi").html("已订阅")
+                    }else if(data['code'] == false){
+                        $("#subbangumi").html("追番")
+                    }else if(data['code'] == 10086){
+                        $("#subbangumi").html("未登录不可追番")
+                    }else{
+                        alert('出现未知错误')
+                    }
+                },
+            });
+</script>
+<script type="text/javascript" src="/static/player/niputv-player.js" charset="utf-8"></script>
+{% endblock %}

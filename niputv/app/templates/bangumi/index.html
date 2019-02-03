@@ -1,0 +1,115 @@
+{% extends "common/min_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/bangumi/index.css">
+<style>
+    .unite-fullpage-width {
+        min-width: 1100px;
+    }
+</style>
+<style>
+    .unite-index-width {
+        min-width: 1200px;
+    }
+</style>
+<div class="unite-index-width unite-index-margintop">
+    <div class="bangumi-nav">
+        <div class="bangumi-nav_a_l">连载中</div>
+        <div class="bangumi-nav_a_l">已完结</div>
+        <div class="bangumi-nav_a_l">番外篇</div>
+        <div class="bangumi-nav_a_l">预告</div>
+        <div class="bangumi-nav_a_r">番剧索引</div>
+    </div>
+    <div class="bangumi-top main">
+        <div class="bangumi-top l">
+            <div class="bangumi-top l-title">
+                <div>比宇宙更远的地方</div>
+                <div style="font-size: 18px;color: #d4d4d4">每周一更新</div>
+            </div>
+            <img src="/static/img/bangumi_carousel/14.png">
+        </div>
+        <div class="bangumi-top r">
+            <div class="bangumi-top r-title" style="background-image: url(/static/img/bangumi/shon.png);min-height: 39px;">
+                <div>宅饮</div>
+                <div style="font-size: 14px;color: #d4d4d4">每周5更新</div>
+            </div>
+            <img src="/static/img/bangumi_carousel/jojo.jpg" width="100%">
+        </div>
+    </div>
+    <div class="bangumi-newanime">
+        <div class="bangumi-module_title" style="font-size: 18px;">连载新番</div>
+        <div class="bangumi-module_newanime-bangumilist" id="bangumi-lianzailist">
+        </div>
+        <!--            <a href="" target="_blank">
+                <div class="bangumi-newanime_box">
+                    <div class="bangumi-newanime-a cover">
+                        <img src="1.png" width="100%">
+                    </div>
+                    <div class="bangumi-newanime-a title">
+
+                        <div class="bangumi-newanime-a title_main">魔法少女伊莉雅 2wei！</div>
+                        <div class="bangumi-newanime-a title_info">更新至第一话</div>
+
+                    </div>
+                </div>
+            </a>-->
+    </div>
+    <div class="bangumi-overanime">
+        <div style="font-size: 18px;color: #000;height: 25px;margin-bottom: 10px;">热门番剧</div>
+        <div class="bangumi-overanime list" id="wanjie-bangumilist">
+
+        </div>
+        <!--            <div class="bangumi-overanime a">
+                <a href="" target="_blank">
+                    <div class="bangumi-overanime title" style="background-image: url(/static/img/bangumi/shon.png)">宅饮</div>
+                    <img class="bangumi-overanime cover" src="1.png">
+                </a>
+            </div>-->
+
+    </div>
+</div>
+<script>
+    function bangumi_lianzai(data) {
+        $("#bangumi-lianzailist").prepend('<a href="/bangumi/donga/' + data['id'] + '" target="_blank">' +
+            '<div class="bangumi-newanime_box">' +
+            '<div class="bangumi-newanime-a cover">' +
+            '<img src="http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/' + data['cover'] + '" width="100%">' +
+            '</div>' +
+            '<div class="bangumi-newanime-a title">' +
+            '<div class="bangumi-newanime-a title_main">' + data['name'] + '</div>' +
+            '<div class="bangumi-newanime-a title_info">更新至第' + data['video_statistics'] + '话</div>' +
+            '</div>' +
+            '</div>' +
+            '</a>')
+    };
+
+    function bangumi_remenover(data) {
+        $("#wanjie-bangumilist").prepend('<div class="bangumi-overanime a">' +
+            '<a href="/bangumi/donga/' + data['id'] + '" target="_blank">' +
+            '<div class="bangumi-overanime title" style="background-image: url(/static/img/bangumi/shon.png)">' + data['name'] + '</div>' +
+            '<img class="bangumi-overanime cover" src="http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/' + data['cover'] + '">' +
+            '</a>' +
+            '</div>')
+    };
+
+    function get_lianzaibangumi() {
+        $.getJSON('/bangumi/api/index-module',
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        bangumi_lianzai(this)
+                    });
+                get_wanjiebangumi()
+            });
+    };
+    get_lianzaibangumi();
+
+    function get_wanjiebangumi() {
+        $.getJSON('/bangumi/api/bangumi-remen',
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        bangumi_remenover(this)
+                    });
+            });
+    };
+</script>
+{% endblock %}

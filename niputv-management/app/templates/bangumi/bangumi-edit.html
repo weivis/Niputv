@@ -1,0 +1,234 @@
+{% extends "common/frame-leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .bangumi-edit.page-wp {
+        width: 95%;
+        margin: 0 auto;
+        position: relative;
+        min-width: 950px;
+    }
+
+    .bangumi-edit.page-wp-l {
+        width: 200px;
+        float: left
+    }
+
+    .bangumi-edit.page-wp-r {
+        width: calc(100% - 411px);
+        border-right: 1px solid #d5d5d5;
+        float: left;
+        margin-left: 20px;
+        padding-right: 20px;
+    }
+
+    .bangumi-edit.page-wp-r-2 {
+        width: 150px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+</style>
+<div class="bangumi-edit page-wp">
+    <div class="bangumi-edit page-wp-l">
+        <div class="admin-ui allwp-title">封面</div>
+        <img src="" id="bangumi-cover" width="100%">
+    </div>
+    <div class="bangumi-edit page-wp-r">
+        <div class="admin-ui allwp-title">番剧信息</div>
+        <div class="admin-ui highlight-imput" id="bangumi-cnwdata"></div>
+        <div class="admin-ui info_title_cover-box">
+            <div class="admin-ui info_title_cover-content_title">番剧名</div>
+            <div class="admin-ui info_title_cover-content_content" id="bangumi-name">拉取失败</div>
+        </div>
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                <div class="admin-ui response-modulebox-1">
+                    <div class="admin-ui response-modulebox-2-1-l">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">播放数统计</div>
+                            <div class="admin-ui info_title_cover-content_content" id="play_statistics">拉取失败</div>
+                        </div>
+                    </div>
+                    <div class="admin-ui response-modulebox-2-1-r">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">订阅人数</div>
+                            <div class="admin-ui info_title_cover-content_content" id="sub_statistics">拉取失败</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-ui response-modulebox-2-1-r">
+                <div class="admin-ui response-modulebox-1">
+                    <div class="admin-ui response-modulebox-2-1-l">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">点赞人数</div>
+                            <div class="admin-ui info_title_cover-content_content" id="like_frequency">拉取失败</div>
+                        </div>
+                    </div>
+                    <div class="admin-ui response-modulebox-2-1-r">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">踩人数</div>
+                            <div class="admin-ui info_title_cover-content_content" id="dislike_frequency">拉取失败</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="admin-ui highlight-imput" id="bangumi-playtype"></div>
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                    <div class="admin-ui response-modulebox-1">
+                            <div class="admin-ui response-modulebox-2-1-l">
+                                    <div class="admin-ui info_title_cover-box">
+                                            <div class="admin-ui info_title_cover-content_title">开播年份-月份</div>
+                                            <div class="admin-ui info_title_cover-content_content" id="bangumi-yearmonth">拉取失败</div>
+                                        </div>
+                            </div>
+                            <div class="admin-ui response-modulebox-2-1-r">
+                                <div class="admin-ui info_title_cover-box">
+                                    <div class="admin-ui info_title_cover-content_title">已存在剧集数量统计</div>
+                                    <div class="admin-ui info_title_cover-content_content" id="videopcs">拉取失败</div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="admin-ui response-modulebox-2-1-r">
+                <div class="admin-ui response-modulebox-1">
+                    <div class="admin-ui response-modulebox-2-1-l">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">放送状态</div>
+                            <div class="admin-ui info_title_cover-content_content" id="bangumi-status">拉取失败</div>
+                        </div>
+                    </div>
+                    <div class="admin-ui response-modulebox-2-1-r">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">上下架状态</div>
+                            <div class="admin-ui info_title_cover-content_content" id="bangumi-shelf">拉取失败</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="admin-ui info_title_cover-box">
+                <div class="admin-ui info_title_cover-content_title">番剧介绍</div>
+                <div class="admin-ui info_title_cover-content_content" id="bangumi-info" style="font-size: 14px;">拉取失败</div>
+                <div class="admin-ui info_title_cover-content_title">CV</div>
+                <div class="admin-ui info_title_cover-content_content" id="bangumi-cv" style="font-size: 14px;">拉取失败</div>
+                <div class="admin-ui info_title_cover-content_title">Tag</div>
+                <div class="admin-ui info_title_cover-content_content" id="bangumi-tag" style="font-size: 14px;"></div>
+            </div>
+        <div class="bangumi-edit page-wp-r-2">
+            <a href="/bangumi/edit/data/{{bangumiid}}" target="_blank"><div class="admin-ui buttom-red" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;">修改番剧信息</div></a>
+            <a href="" id="bangumi-dramaurl" target="_blank"><div class="admin-ui buttom-red" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;">剧集管理</div></a>
+            <div class="admin-ui buttom-normal" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;" id="shelf-up">上架</div>
+            <div class="admin-ui buttom-normal" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;" id="shelf-dow">下架</div>
+            <div class="admin-ui buttom-normal" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;" id="status-satar">切换至连载状态</div>
+            <div class="admin-ui buttom-normal" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;" id="status-over">完结该番剧</div>
+            <div class="admin-ui buttom-normal" style="width: 100%;height: 50px;line-height: 50px;padding: 0;margin-bottom: 20px;" id="del-bangumi">删除番剧</div>
+        </div>
+    </div>
+    <script>
+        var str = window.location.href;
+        var index = str.lastIndexOf("\/");
+        str = str.substring(index + 1, str.length);
+        
+        function wirtag(data) {
+            $("#bangumi-tag").prepend(data['tag'] + ' ')
+        }
+
+        function getinfo() {
+            $.getJSON('/bangumi/edit/api/id/' + str,
+                function (data, textStatus) {
+                    $("#bangumi-name").html(data['name'])
+                    $("#bangumi-info").html(data['introduction'])
+                    $("#bangumi-cv").html(data['cv'])
+                    $("#bangumi-yearmonth").html(data['year'] + '-' + data['month'])
+                    $("#bangumi-cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' +
+                        data['cover'])
+                    $("#bangumi-dramaurl").attr("href",'/bangumi/edit/drama/' + str)
+                    
+                    //console.log(data['tag'])
+                    $.each((data['tag']),
+                    function () {
+                        wirtag(this)
+                    });
+
+                    var upswk = data['uploads_week']
+                    if (data['uploads_week'] == 7) {
+                        var upswk = "日"
+                    }
+
+                    if (data['shelf'] == 1) {
+                        $("#bangumi-shelf").html("下架")
+                    }
+                    if (data['shelf'] == 0) {
+                        $("#bangumi-shelf").html("正常")
+                    }
+
+                    if (data['status'] == 1) {
+                        $("#bangumi-status").html("连载中")
+                    }
+                    if (data['status'] == 0) {
+                        $("#bangumi-status").html("完结")
+                    }
+
+                    $("#bangumi-cnwdata").html('该番剧创建于: ' + data['creation_time'])
+                    $("#bangumi-playtype").html('每周 ' + upswk + ' - ' + data['uploads_time'] + ' 更新')
+
+                    $("#videopcs").html(data['video_statistics'])
+
+                    $("#play_statistics").html(data['play_statistics'])
+                    $("#sub_statistics").html(data['sub_statistics'])
+                    $("#like_frequency").html(data['like_frequency'])
+                    $("#dislike_frequency").html(data['dislike_frequency'])
+                });
+        }
+        getinfo();
+
+        $("#shelf-up").click(function () {
+            $.getJSON('/bangumi/edit/api/shelf/' + str + '/0',
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            getinfo()
+                        });
+                })
+        })
+        $("#shelf-dow").click(function () {
+            $.getJSON('/bangumi/edit/api/shelf/' + str + '/1',
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            getinfo()
+                        });
+                })
+        })
+        $("#status-over").click(function () {
+            $.getJSON('/bangumi/edit/api/status/' + str + '/0',
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            getinfo()
+                        });
+                })
+        })
+        $("#status-satar").click(function () {
+            $.getJSON('/bangumi/edit/api/status/' + str + '/1',
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            getinfo()
+                        });
+                })
+        })
+        $("#del-bangumi").click(function () {
+            $.getJSON('/bangumi/edit/api/del/' + str,
+                function (data, textStatus) {
+                    $.each((data),
+                        function () {
+                            getinfo()
+                        });
+                })
+        })
+    </script>
+    {% endblock %}

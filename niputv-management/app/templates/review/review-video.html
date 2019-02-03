@@ -1,0 +1,132 @@
+{% extends "common/frame-no_leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .review-page.wp {
+        max-width: 1701px;
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .review-page.videor-wp {
+        width: 400px;
+        float: left;
+        margin-left: 20px;
+        border-right: 1px solid #d5d5d5;
+        min-height: 800px;
+        padding-right: 20px;
+    }
+
+    .review-page.videol-wp {
+        width: calc(100% - 606px);
+        float: left
+    }
+    .review-page.review-operating-box{width: 145px;position: absolute;right: 0;top: 0;}
+    .review-page.review-operating-a{width: 100%;border-radius: 3px;margin-bottom: 20px;text-align: center;font-size: 18px;}
+</style>
+<div class="review-page wp">
+    <div class="review-page review-operating-box">
+        <div class="review-page review-operating-a" style="height: 60px;line-height: 60px;background-color: #ff2165;color: #fff" id="videoreok">通过</div>
+        <div class="review-page review-operating-a" style="height: 45px;line-height: 45px;background-color: #eeeeee">退回</div>
+    </div>
+    <div class="review-page videol-wp">
+        <video src="http://pclfl90b9.bkt.clouddn.com/{{video}}-360p.mp4" controls="controls" width="100%" style="margin-bottom: 50px;">
+            您的浏览器不支持 video 标签。
+        </video>
+        <div class="admin-ui info_title_cover-box">
+            <div class="admin-ui info_title_cover-content_title">视频介绍</div>
+            <div class="admin-ui info_title_cover-content_content" style="font-size: 14px;" id="videojieshao">asd</div>
+        </div>
+    </div>
+    <div class="review-page videor-wp">
+
+        <div>
+            <img src="" id="cover" width="100%" style="margin-bottom: 50px;">
+        </div>
+
+        <div class="admin-ui info_title_cover-box">
+            <div class="admin-ui info_title_cover-content_title">标题</div>
+            <div class="admin-ui info_title_cover-content_content" id="title">asd</div>
+        </div>
+
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                <div class="admin-ui info_title_cover-box">
+                    <div class="admin-ui info_title_cover-content_title">所选分区</div>
+                    <div class="admin-ui info_title_cover-content_content" id="fq">asd</div>
+                </div>
+            </div>
+            <div class="admin-ui response-modulebox-2-1-r">
+                <div class="admin-ui info_title_cover-box">
+                    <div class="admin-ui info_title_cover-content_title">所选类目</div>
+                    <div class="admin-ui info_title_cover-content_content" id="lm">asd</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                <div class="admin-ui info_title_cover-box">
+                    <div class="admin-ui info_title_cover-content_title">投稿日期</div>
+                    <div class="admin-ui info_title_cover-content_content" id="release_date"></div>
+                </div>
+            </div>
+            <div class="admin-ui response-modulebox-2-1-r">
+                <div class="admin-ui info_title_cover-box">
+                    <div class="admin-ui info_title_cover-content_title">投稿时间</div>
+                    <div class="admin-ui info_title_cover-content_content" id="release_time"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-ui info_title_cover-box">
+            <div class="admin-ui info_title_cover-content_title">类型</div>
+            <div class="admin-ui info_title_cover-content_content" id="json-reprint"></div>
+        </div>
+
+        <div class="admin-ui info_title_cover-box" id="reprint-box">
+            <div class="admin-ui info_title_cover-content_title">转载地址</div>
+            <div class="admin-ui info_title_cover-content_content" style="font-size: 14px;" id="reprint"></div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    str = '{{videoid}}'
+
+    $(document).ready(function () {
+        $.getJSON('/review/review-video/api/get-videoinfo/' + str,
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        $("#title").html(data['video_name'])
+                        $("#fq").html(data['fq'])
+                        $("#lm").html(data['lm'])
+                        $("#release_date").html(data['release_date'])
+                        $("#release_time").html(data['release_time'])
+                        $("#videojieshao").html(data['video_introduction'])
+                        $("#cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/' + data['cover'])
+                        if (data['reprint'] == "") {
+                            $("#json-reprint").html("原创")
+                            $("#reprint-box").hide()
+                        } else {
+                            $("#json-reprint").html("转载")
+                            $("#reprint").html(data['reprint'])
+                            $("#reprint-box").show()
+                        }
+                    });
+            });
+    });
+
+    $("#videoreok").click(function () {
+        $.getJSON('/review/review-video/api/review-operating/ok/' + str,
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        alert()
+                    });
+            });
+    })
+</script>
+{% endblock %}

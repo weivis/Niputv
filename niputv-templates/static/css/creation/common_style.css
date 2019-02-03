@@ -1,0 +1,44 @@
+/**--------------------------------------------------------**/
+/**作者 ShenVi站长 公共样式**/
+
+body{margin: 0;background-color: #fff}
+a{text-decoration:none;}
+li,lu{list-style-type:none;}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, table, th, td {margin:0; padding:0;}  
+
+/**--------------------------------------------------------**/
+/**作者 ShenVi站长 响应式框架**/
+
+.unite-index-width{width: 1500px;margin: 0 auto;}
+.unite-fullpage-width{max-width: 1400px;width: 95%;margin: 0 auto}
+.unite-minpage-width{max-width: 1600px;width: 90%;margin: 0 auto}
+
+@media screen and (max-width:1800px ) {
+    .unite-index-width{width: 1300px;}
+    .bangumi-overanime.a{margin-right: 37px !important;}
+    .bangumi-overanime.a:nth-child(7n){margin-right: 0px !important;}
+}
+
+@media screen and (max-width:1630px ) {
+    .unite-index-width{width: 1150px;}
+    .bangumi-overanime.a{margin-right: 46px !important;}
+    .bangumi-overanime.a:nth-child(6){margin-right: 0px !important;}
+    .bangumi-overanime.a:nth-child(7){margin-right: 46px !important;}
+    .bangumi-overanime.a:nth-child(10){display: none;}
+    .bangumi-overanime.a:nth-child(11){display: none;}
+}
+
+@media screen and (max-width:1450px ) {
+    .unite-index-width{width: 960px;}
+}
+
+@media screen and (max-width:1230px ) {
+    .unite-index-width{width: 750px;}
+}
+
+/**--------------------------------------------------------**/
+
+/**页面整体头部距离**/
+.unite-index-margintop{margin-top: 100px;}
+.unite-index-margintop.top{margin-top: 70px;}
+.unite-index-margintop.none{margin-top: 0px;}

@@ -1,0 +1,146 @@
+{% extends "frame/frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/index/category-subdivision.css">
+<link rel="stylesheet" type="text/css" href="/static/css/common/public_module.css">
+<style>
+</style>
+<div class="subdivision-header header unite-index-margintop top">
+    <div class="unite-index-width">
+
+        <a href="" id="partition">
+            <div class="subdivision-header header-ico">
+                <div class="subdivision-header header-ico-box">
+                    <img src="" class="subdivision-header header-ico_img" id="category-ico" width="50%">
+                </div>
+                <div class="subdivision-header nav-title" id="division_name">
+                    未知
+                </div>
+            </div>
+        </a>
+        <div id="category-nav">
+
+        </div>
+        <!--<a><div class="subdivision-header nav-a">原创</div></a>-->
+    </div>
+</div>
+
+<div class="unite-index-width">
+    <div class="subdivision video_filter">
+        <div class="subdivision video_filter_select" id="videolist_nav">
+            <div class="subdivision_video_filter_select title">排序</div>
+            <div class="subdivision_video_filter_select select nav-a_hid" data-type="normal">最新</div>
+            <div class="subdivision_video_filter_select select" data-type="play">播放最多</div>
+            <div class="subdivision_video_filter_select select" data-type="like">点赞最多</div>
+        </div>
+    </div>
+</div>
+
+<div class="unite-index-width unite-index-margintop none">
+
+    <div class="module-interchangeable-indexvideo videolist" id="ajaxvideolist">
+
+    </div>
+
+    <!--
+        <a href="" target="_blank">
+            <div class="module-interchangeable-indexvideo-videolist main">
+                <div class="module-interchangeable-indexvideo-videolist wp">
+                    <div class="module-interchangeable-indexvideo-videolist cover"></div>
+                    <div class="module-interchangeable-indexvideo-videolist title">
+                        史上最长的择偶标准：好男人应该满足这43个条件 | 史蒂夫哈维 Steve Harvey
+                    </div>
+                    <div class="module-interchangeable-indexvideo-videolist video_info">
+                        815次播放 - 2018-07-23
+                    </div>
+                </div>
+            </div>
+        </a>
+    -->
+
+</div>
+<div data-json='{{data}}' id="category"></div>
+<script type="text/javascript">
+    var str = window.location.href;
+    var index = str.lastIndexOf("\/");
+    str = str.substring(index + 1, str.length);
+
+    var jsondata = $("#category").data("json")
+    var json = jsondata //$.parseJSON($("#category").data("json").replace(/'/g, '"'))
+    var json_style = json['style']
+    var json_nav = json['nav']
+
+    function generate_navlink(data) {
+        if (str == data['url']) {
+            var navcss = 'subdivision-header nav-a nav-a_hid'
+        } else {
+            var navcss = 'subdivision-header nav-a'
+        }
+        $("#category-nav").prepend('<a href="' + data['url'] + '" target=""><div class="' + navcss + '">' +
+            data['navtitle'] + '</div></a>')
+    };
+    $("#partition").attr("href","/category/" + jsondata['url'])
+    console.log(json_nav)
+    $("#division_name").html(json_style['name_en'] + ' · ' + json_style['name_cn'])
+    $("#category-headerbackground").css("background-image", 'url(/static/img/category_background/' + json_style['cover'] +
+        ')')
+    $("#category-ico").attr("src", '/static/img/category_ico/' + json_style['ico'])
+
+    $.each((json_nav),
+        function () {
+            generate_navlink(this)
+        });
+
+    function generate_video_list(data) {
+        $("#ajaxvideolist").prepend('<a href="/watch/' + data['video_id'] + '" target="_blank">' +
+            '<div class="module-interchangeable-indexvideo-videolist main">' +
+            '<div class="module-interchangeable-indexvideo-videolist wp">' +
+            '<div class="module-interchangeable-indexvideo-videolist cover"><img src="http://video-cover.niputv.com/' +
+            data['video_cover'] + '" width="100%"></div>' +
+            '<div class="module-interchangeable-indexvideo-videolist title">' + data['video_name'] + '</div>' +
+            '<div class="module-interchangeable-indexvideo-videolist video_info">' + data['play_statistics'] +
+            '次播放 - ' + data['release_date'] + '</div>' +
+            '</div>' +
+            '</div>' +
+            '</a>')
+    };
+
+    $('#videolist_nav').find('.subdivision_video_filter_select.select').click(function () {
+        // 为当前点击的导航加上高亮，其余的移除高亮
+        $(this).addClass('nav-a_hid').siblings('.subdivision_video_filter_select.select').removeClass(
+            'nav-a_hid');
+    });
+
+    $(document).ready(function () {
+        var video_sort = $(this).data("type")
+        var videolsiturl = '/category/api/get-videolist/category/' + str + '/sort/normal/page/0'
+        $.ajax({
+            type: "POST", //方式 可GET 或 POST
+            url: videolsiturl,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                $.each((data),
+                    function () {
+                        generate_video_list(this)
+                    });
+            }
+        });
+    });
+
+    $('.subdivision_video_filter_select.select').click(function (e) {
+        $("#ajaxvideolist").empty();
+        var video_sort = $(this).data("type")
+        var videolsiturl = '/category/api/get-videolist/category/' + str + '/sort/' + video_sort + '/page/0'
+        $.ajax({
+            type: "POST", //方式 可GET 或 POST
+            url: videolsiturl,
+            dataType: 'json',
+            success: function (data) {
+                $.each((data),
+                    function () {
+                        generate_video_list(this)
+                    });
+            }
+        });
+    });
+</script>
+{% endblock %}

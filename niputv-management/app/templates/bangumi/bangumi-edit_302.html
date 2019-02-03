@@ -1,0 +1,17 @@
+{% extends "common/frame-leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<div>请输入需要修改的番剧id</div>
+<br>
+<input class="admin-ui inpurt-input" id="bangumi-id">
+<div class="admin-ui buttom-blue" style="margin-top: 30px;float: left;width: 10%;" onclick=javascrtpt:jump()>确定</div>
+<script>
+    function jump() {
+        bangumiid = $("#bangumi-id").val()
+        if(bangumiid == ''){
+            alert('请输入需要编辑的番剧id')
+        }else{
+            window.location.href = "/bangumi/edit/" + bangumiid;
+        }
+    }
+</script>
+{% endblock %}

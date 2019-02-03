@@ -1,0 +1,31 @@
+<head>
+    {% include 'index_head.html' %}
+</head>
+<!--页头-->
+<div class="frame-common-header frame-common-header_style box-shon">
+    {% include 'frame/frame-logo.html' %}
+    {% include 'frame/frame-search.html' %}
+
+    <div style="float:  right;margin-top: 5px;margin-right: 25px;">{% include 'module/header-usermoudle.html' %}</div>
+
+    {% if current_user.is_authenticated %} 
+    <a href="http://creation.niputv.com/upload/" target="_blank">
+        <div class="frame-common-header_uploadvideo">
+            <img src="/static/img/frame/header_upload_video.png" class="frame-common-header_uploadvideo_img">
+        </div>
+    </a>
+    {% endif %}
+
+</div>
+
+<!--左侧导航-->
+<div class="frame-common-leftnav frame-common-left_width" id="frame-left_nav">
+    {% include 'common/common_nav.html' %}
+</div>
+
+<!--右边主体页面内容-->
+<div class="frame-common-right_content">
+    {% block content %}{% endblock %}
+</div>
+{% include 'traffic_statistics/niputv.html' %}
+<script src="/static/js/frame.js" language="JavaScript"></script>

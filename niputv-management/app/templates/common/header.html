@@ -1,0 +1,18 @@
+<link rel="stylesheet" type="text/css" href="/static/css/header.css">
+
+<div class="header-main">
+    <div class="header wp">
+        <div style="background-image: url(/static/img/header-logo.png);" class="header logo"></div>
+        <div class="header nav">
+            <a href="/" class="header nav-a{% if headernav_tab == 'index' %}-hier{% endif %}">主页</a>
+            <a href="" class="header nav-a{% if headernav_tab == 'module' %}-hier{% endif %}">模块</a>
+            <a href="/review/review" class="header nav-a{% if headernav_tab == 'review' %}-hier{% endif %}">审核中心</a>
+            <a href="" class="header nav-a{% if headernav_tab == 'module' %}-hier{% endif %}">稿件管理</a>
+            <a href="/bangumi/loading" class="header nav-a{% if headernav_tab == 'bangumi' %}-hier{% endif %}">番剧管理</a>
+            <a href="" class="header nav-a{% if headernav_tab == 'module' %}-hier{% endif %}">举报中心</a>
+        </div>
+        <div class="header head"><img src="https://ssl1.mahouo.com/head/{% if current_user.head == None %}no_headimg.jpg{% else %}{{current_user.head}}{%endif%}" width="100%"></div>
+        <span class="header username">{{current_user.username}}</span>
+        <div class="header com-index"><a href="http://www.niputv.com" target="_blank" style="color: #fff">前往主站</a></div>
+    </div>
+</div>

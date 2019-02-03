@@ -1,0 +1,82 @@
+<script type="text/javascript" src="https://niputv-dns-1251754029.cos.ap-guangzhou.myqcloud.com/jq/2.1.4/jquery.min.js"></script>
+<style>
+    body{background-color: #fff}
+    .logo{position: absolute;left: auto;right: 110px;margin: auto;top: 10%;bottom: auto;}
+    .login.main{width: calc(100% - 30px);max-width: 360px;position: absolute;left: auto;right: 0;bottom: auto;top: 20%;margin: auto; z-index: 50;max-height: 380px;background-color: #00000061;padding: 10px;border-radius: 5px;box-shadow: 0px 5px 5px #00000087;}
+    .login.forgetpassword{height: 45px;width: 100%;line-height: 45px;}
+    .login.forgetpassword a{font-size: 14px;}
+    .login.forgetpassword a{color: #fff}
+    .login.loginbutton{width: 100%;height: 47px;background-color: #008cee;border-radius: 5px;line-height: 47px;text-align: center;font-size: 18px;color: #fff;margin-top: 20px;}
+    .login.input{height: 35px;margin-top: 20px;padding-left: 10px;border-radius: 5px;border: 0px;width: 100%;background-color: #f4f4f4;box-shadow: 0px 3px 3px #00000030;}
+    @media screen and (max-width: 720px) {
+        .login.input{background-color: #ffffff91;color: #000}
+        .login.main{position: absolute;left: 0;right: 0;margin: auto;bottom: 0;top: 0;background-color: inherit;padding: 0px;box-shadow: inherit;}
+        .logo{position: absolute;left: 0;right: 0;margin: auto;top: 80px;}
+        .login.more{color: #1b1b1b}
+        .login.more a{color: #1b1b1b}
+        .login.forgetpassword a{color: #000}
+    }
+</style>
+<div class="public-width" style="position: relative;height: 100%;">
+    <div class="login main">
+        <input type="text" class="login input" id="username" placeholder="用户名" />
+        <input type="text" class="login input" id="useremail" placeholder="邮箱" />
+        <input type="text" class="login input" id="phone" placeholder="手机号" oninput = "value=value.replace(/[^\d]/g,'')"/>
+        <input type="password" class="login input" id="password" placeholder="登陆密码" />
+        <input type="password" class="login input" id="repassword" placeholder="在输入一次密码" />
+        <div class="login loginbutton" id="reg">注册</div>
+        <div class="login forgetpassword"><a href="">忘记密码？</a></div>
+    </div>
+</div>
+<script>
+    $("#reg").click(function () {
+        var nowuseremail = $("#useremail").val()
+        var nowuserphone = $("#phone").val()
+        var emailreg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        var isok = emailreg.test(nowuseremail);
+        if ($("#username").val() == '') {
+            alert('请输入用户名')
+        } else if (nowuseremail == '') {
+            alert('请输入邮箱')
+        } else if (nowuserphone == '') {
+            alert('请输入手机号')
+        } else if ($("#password").val() == '') {
+            alert('请输入密码')
+        } else if ($("#repassword").val() == '') {
+            alert('请在输入一次密码')
+        } else if (isok) {
+            if (nowuserphone.length < 11) {
+                alert('手机号不正确')
+            } else {
+                if ($("#password").val() == $("#repassword").val()) {
+                    $.ajax({
+                        url: '#', //api
+                        type: 'POST',
+                        data: JSON.stringify({
+                            "username": $("#username").val(),
+                            "useremail": $("#useremail").val(),
+                            "phone": $("#phone").val(),
+                            "password": $("#password").val(),
+                            "qq": $("#QQ").val()
+                        }), //数据
+                        async: true,
+                        cache: false,
+                        contentType: "application/json; charset=utf-8",
+                        processData: false,
+                        dataType: 'json',
+                        success: function (returndata) {
+                            alert(returndata['text'])
+                        },
+                        error: function (returndata) {
+                            alert('系统繁忙')
+                        }
+                    })
+                } else {
+                    alert('密码输入有误 请重新输入')
+                }
+            }
+        } else {
+            alert('邮箱格式不正确')
+        }
+    })
+</script>

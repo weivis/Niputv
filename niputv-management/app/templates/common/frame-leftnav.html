@@ -1,0 +1,11 @@
+<head>
+    {% include 'common/common-head.html' %}
+</head>
+<style>
+    .page-frame.header{width: 100%;min-height: 71px;position: fixed;top: 0;left: 0;right: 0;}
+    .page-frame.le-nav{position: fixed;left: 0;width: 200px;height: calc(100% - 71px);bottom: 0;border-right: 1px solid #d5d5d5}
+    .page-frame.page-content{float: right;width: calc(100% - 260px);margin-top: 71px;padding: 30px;}
+</style>
+<div class="page-frame header">{% include 'common/header.html' %}</div>
+<div class="page-frame le-nav">{% include 'common/features-nav.html' %}</div>
+<div class="page-frame page-content">{% block content %}{% endblock %}</div>

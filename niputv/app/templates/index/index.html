@@ -1,0 +1,49 @@
+{% extends "common/common_frame.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/module/public_module.css">
+<div class="unite-index-width unite-index-margintop">
+
+    <div class="module-interchangeable-indexvideo main">
+
+        <div class="module-interchangeable-indexvideo title">
+            <div class="module-interchangeable-indexvideo ico">
+                <div style="background: #00000000 url(/static/img/ico.png) 0px 0px no-repeat" class="module-interchangeable-indexvideo ico_img"></div>
+            </div>
+            <span class="module-interchangeable-indexvideo module_titile">当前热门视频</span>
+        </div>
+
+        <div class="module-interchangeable-indexvideo videolist" id="index_module_popular"></div>
+
+        <!--
+
+            <div class="module-interchangeable-indexvideo-videolist main">
+                <div class="module-interchangeable-indexvideo-videolist wp">
+                    <div class="module-interchangeable-indexvideo-videolist cover"></div>
+                    <div class="module-interchangeable-indexvideo-videolist title">
+                        史上最长的择偶标准：好男人应该满足这43个条件 | 史蒂夫哈维 Steve Harvey
+                    </div>
+                    <div class="module-interchangeable-indexvideo-videolist video_info">
+                        815次播放 - 2018-07-23
+                    </div>
+                </div>
+            </div>
+
+        -->
+
+    </div>
+
+    {% include 'index/index-bangumi.html' %}
+
+    <div class="module-interchangeable-indexvideo main" id="main_list">
+        <div class="module-interchangeable-indexvideo title">
+            <div class="module-interchangeable-indexvideo ico">
+                <div style="background: #00000000 url(/static/img/ico.png) 0px -70px no-repeat" class="module-interchangeable-indexvideo ico_img"></div>
+            </div>
+            <span class="module-interchangeable-indexvideo module_titile">MAD</span>
+            <a class="module-interchangeable-indexvideo more_link" href="">更多></a>
+        </div>
+        <div class="module-interchangeable-indexvideo videolist" id="index_module_mad"></div>
+    </div>
+
+</div>
+    <script src="/static/js/main/index.js"></script>
+    {% endblock %}

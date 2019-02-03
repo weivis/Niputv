@@ -1,0 +1,81 @@
+{% extends "common/common_frame.html" %}{% block content %}
+<style>
+    .bangumilist.box {
+        float: left;
+        width: 24%;
+        height: 160px;
+        min-width: 360px;
+        margin-bottom: 30px;
+        margin-right: 1%;
+    }
+
+    .bangumilist.img {
+        float: left;
+        max-width: 120px;
+    }
+
+    .bangumilist.text {
+        height: 100%;
+        float: right;
+        width: calc(100% - 135px);
+    }
+
+    .bangumilist.text-title {
+        color: #000;
+        font-size: 16px;
+    }
+
+    .bangumilist.text-info {
+        color: #5d5d5d;
+        margin-top: 15px;
+        word-wrap: break-word;
+        font-size: 12px;
+    }
+</style>
+<div class="unite-index-width unite-index-margintop">
+    <div style="margin-bottom: 20px;font-size: 18px;">我追的番</div>
+    <div id="bangumilist">
+        <!--<div class="bangumilist box">
+        <a href="" target="_blank">
+            <div class="bangumilist img">
+                <img src="http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/20180921145411.jpg">
+            </div>
+            <div class="bangumilist text">
+                <div class="bangumilist text-title">asd</div>
+                </br>
+                <div class="bangumilist text-info">asd</div>
+            </div>
+        </a>
+    </div>-->
+    </div>
+</div>
+<script>
+    function bangumilist(data) {
+        $("#bangumilist").prepend('<div class="bangumilist box">' +
+                '<a href="/bangumi/donga/'+ data['bangumi_id'] +'" target="_blank">' +
+                        '<div class="bangumilist img">' +
+                                '<img src="http://pckkf57ve.bkt.clouddn.com/bangumi/cover/min/'+ data['bangumi_cover'] +'">' +
+                                '</div>' +
+                                '<div class="bangumilist text">' +
+                                        '<div class="bangumilist text-title">'+ data['bangumi_name'] +'</div>' +
+                                        '<div class="bangumilist text-info">' + data['bangumi_introduction'] + '</div>' +
+                                        '</div>' +
+                                        '</a>' +
+                                        '</div>')
+    };
+
+    $.ajax({
+        type: "POST", //方式 可GET 或 POST
+        url: "bangumilist/1",
+        dataType: 'json',
+        success: function (data) {
+            $.each((data),
+                function () {
+                    bangumilist(this)
+                }
+
+            )
+        }
+    });
+</script>
+{% endblock %}

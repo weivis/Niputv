@@ -1,0 +1,88 @@
+<head>
+    {% include 'creation_head.html' %}
+    <style>
+        .frame-common-popups_popbox {
+            z-index: 1;
+        }
+        .frame-common-header_style.header-logo{left: 25px;}
+    </style>
+</head>
+<!--弹窗导航栏-->
+
+<!--页头-->
+<div class="frame-common-header frame-common-header_style box-shon">
+    <div class="frame-common-header_logo_pubox frame-common-left_width">
+        <!--<img src="/static/img/frame/header-open_left_nav.png" class="frame-common-header_style left_nav_open_butt" id="frame-opne_leftnav">-->
+        <img src="/static/img/frame/header-logo.png" class="frame-common-header_style header-logo" onclick="alert('logo')">
+    </div>
+
+    <div class="frame-common-header_search input">
+        <form>
+            <button type="submit" class="frame-common-header_search button">
+                <img src="/static/img/frame/header-search.png">
+            </button>
+            <input type="search" class="frame-common-header_search input_on">
+        </form>
+    </div>
+
+    <div style="float:  right;margin-top: 5px;margin-right: 25px;">{% include 'module/header-usermoudle.html' %}</div>
+
+    {% if current_user.is_authenticated %}
+    <div class="frame-common-header_uploadvideo">
+        <img src="/static/img/frame/header_upload_video.png" class="frame-common-header_uploadvideo_img" onclick="alert('上传视频')">
+    </div>
+    {% endif %}
+
+</div>
+
+
+<!--左侧导航-->
+<div class="frame-common-leftnav frame-common-left_width" id="frame-left_nav">
+
+    <div class="frame-common-leftnav_list link-list" style="padding-top: 10px;">
+        <div class="frame-common-leftnav_list list_name">创作中心</div>
+        <a href="/">
+            <div class="frame-common-leftnav_list link-a">
+                <div class="frame-common-leftnav_list link-ico">
+                    <img src="/static/img/frame/leftnav-home.png" class="frame-common-leftnav_list link-icoimg">
+                </div>
+                <span class="frame-common-leftnav_list text">首页</span>
+            </div>
+        </a>
+        <a href="/upload">
+            <div class="frame-common-leftnav_list link-a">
+                <div class="frame-common-leftnav_list link-ico">
+                    <img src="/static/img/frame/leftnav-myspcae.png" class="frame-common-leftnav_list link-icoimg">
+                </div>
+                <span class="frame-common-leftnav_list text">发布作品</span>
+            </div>
+        </a>
+        <a href="/works">
+            <div class="frame-common-leftnav_list link-a">
+                <div class="frame-common-leftnav_list link-ico">
+                    <img src="/static/img/frame/leftnav-subscription.png" class="frame-common-leftnav_list link-icoimg">
+                </div>
+                <span class="frame-common-leftnav_list text">管理视频</span>
+            </div>
+        </a>
+        <a href="/creation/video">
+            <div class="frame-common-leftnav_list link-a">
+                <div class="frame-common-leftnav_list link-ico">
+                    <img src="/static/img/frame/leftnav-subscription.png" class="frame-common-leftnav_list link-icoimg">
+                </div>
+                <span class="frame-common-leftnav_list text">频道设置</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+<!--右边主体页面内容-->
+<div class="frame-common-right_content" style="margin-top: 70px;">
+
+    {% block content %}{% endblock %}
+
+</div>
+
+<!--<script src="/static/js/frame/common_frame.js" language="JavaScript"></script>-->
+{% include 'traffic_statistics/creation.html' %}

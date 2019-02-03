@@ -1,0 +1,112 @@
+{% extends "common/frame-no_leftnav.html" %}{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin-ui.css">
+<style>
+    .bangumi-edit-drama.page-wp {
+        width: 95%;
+        max-width: 1700px;
+        margin: 0 auto;
+        position: relative;
+        min-width: 950px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .bangumi-edit-drama.page-wp-l {
+        width: 200px;
+        float: left
+    }
+
+    .bangumi-edit-drama.page-wp-r {
+        width: calc(100% - 240px);
+        float: left;
+        margin-left: 20px;
+    }
+</style>
+<div class="bangumi-edit-drama page-wp">
+    <div class="bangumi-edit-drama page-wp-l">
+
+        <img src="" id="bangumi-cover" width="100%">
+
+    </div>
+    <div class="bangumi-edit-drama page-wp-r">
+        <div class="admin-ui info_title_cover-box">
+            <div class="admin-ui info_title_cover-content_title">番剧名</div>
+            <div class="admin-ui info_title_cover-content_content" id="bangumi-name">拉取失败</div>
+        </div>
+        <div class="admin-ui response-modulebox-1">
+            <div class="admin-ui response-modulebox-2-1-l">
+                <div class="admin-ui response-modulebox-1">
+                    <div class="admin-ui response-modulebox-2-1-l">
+                        <div class="admin-ui info_title_cover-box">
+                            <div class="admin-ui info_title_cover-content_title">已存在剧集数量统计</div>
+                            <div class="admin-ui info_title_cover-content_content" id="videopcs">拉取失败</div>
+                        </div>
+                    </div>
+                    <div class="admin-ui response-modulebox-2-1-r">
+                            <div class="admin-ui info_title_cover-box">
+                                <div class="admin-ui info_title_cover-content_title">放送状态</div>
+                                <div class="admin-ui info_title_cover-content_content" id="bangumi-status">拉取失败</div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <a href="" target="_blank" id="bangumi-editurl"><div class="admin-ui buttom-red">查看更多信息</div></a>
+        <a href="" target="_blank" id="bangumi-uploaddramaurl"><div class="admin-ui buttom-red">上传新的一集</div></a>
+    </div>
+</div>
+<div class="bangumi-edit-drama page-wp" id="video-list">
+    <div><img src=""></div>
+</div>
+<script>
+    var str = window.location.href;
+    var index = str.lastIndexOf("\/");
+    str = str.substring(index + 1, str.length);
+
+    function getinfo() {
+        $.getJSON('/bangumi/edit/api/id/' + str,
+            function (data, textStatus) {
+                $("#bangumi-cover").attr("src", 'http://pckkf57ve.bkt.clouddn.com/bangumi/cover/' + data['cover'])
+                $("#bangumi-name").html(data['name'])
+                $("#videopcs").html(data['video_statistics'])
+                $("#bangumi-editurl").attr("href",'/bangumi/edit/' + str)
+                $("#bangumi-uploaddramaurl").attr("href",'/bangumi/edit/drama/upload/' + str)
+                if (data['status'] == 1) {
+                                $("#bangumi-status").html("连载中")
+                            }
+                            if (data['status'] == 0) {
+                                $("#bangumi-status").html("完结")
+                            }
+                getvideolist()
+            });
+    }
+
+    function videolist(data) {
+        $("#video-list").prepend('<div class="review-video scroll-box">' +
+            '<div class="review-video box">' +
+            '<div class="review-video img">' +
+            '<a href="/bangumi/edit/drama/video/'+ data ['id'] +'" target="_blank"><div class="review-video button">编辑</div></a>' +
+            '<img src="http://pckkf57ve.bkt.clouddn.com/bangumi/video/cover/'+ data['cover'] +'" width="100%">' +
+            '</div>' +
+            '<div class="review-video title">' +
+            '<div>第 '+data['video_sort']+' 话</div>' +
+            '<div>'+data['video_name']+'</div>' +
+            '</div>' +
+            '<div class="review-video date">'+data['time']+'</div>' +
+            '</div>' +
+            '</div>')
+    };
+
+    function getvideolist() {
+        $.getJSON('/bangumi/edit/drama/api/get-dramalist/' + str,
+            function (data, textStatus) {
+                $.each((data),
+                    function () {
+                        videolist(this);
+                    });
+            });
+    }
+
+    getinfo();
+</script>
+{% endblock %}

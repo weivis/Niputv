@@ -1,0 +1,7 @@
+.review-video.scroll-box{width: 16%;float: left;min-width: 270px;margin-bottom: 30px;}
+.review-video.scroll-box:nth-child(6n){width: 240px;}
+.review-video.box{width: 240px;box-shadow: 0px 5px 5px #00000025;position: relative;}
+.review-video.button{min-width: 40px;height: 40px;background-color: #ff2165;position: absolute;right: 0;top: 0;font-size: 12px;color: #fff;text-align: center;line-height: 40px;padding-left: 10px;padding-right: 10px;}
+.review-video.img{height: 135px;}
+.review-video.title{height: 40px;width: calc(100% - 20px);padding: 10px;font-size: 14px;}
+.review-video.date{width: calc(100% - 20px);height: 20px;text-align: left;line-height: 20px;padding: 10px;font-size: 12px;color: #848484}

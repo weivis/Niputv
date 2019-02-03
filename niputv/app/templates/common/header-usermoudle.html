@@ -1,0 +1,70 @@
+<head> 
+<style>
+#index-top_fun-module{width: 320px;height: 520px;background-color: #fff;margin:0 auto;}
+.index-top_header-fun-box:hover{background-color: #f9f9f9; box-shadow: 0 0 2px #c5c5c5;}
+.index-top_header-fun-box{width: 100px;height: 100px;float: left;margin-top: 25px;margin-left: 5px;overflow: hidden;position: relative;}
+.index-top_header-fun-box_img{margin: auto;width: 60px;height: 60px;margin-top: 3px;position: absolute;left: 0;right: 0;top: 7px;bottom: auto;}
+.index-top_header-fun-box_txt{text-align: center;font-family: Microsoft YaHei;font-size: 13px;color: #0976f1;position: absolute;left: 0;right: 0;bottom: 7px;top: auto;margin: auto;font-weight: initial;}
+</style>
+  <meta charset="utf-8" /> 
+  <link rel="stylesheet" type="text/css" href="http://niputv-pic-1251754029.cos.ap-guangzhou.myqcloud.com/header-usermodule/header-usermodule.css" /> 
+  <style>
+.index-top_header-fun-box_img{margin-top:10px;}
+.index-top_header-fun-box_txt{    height: 45%;}
+#index-top-sing_in-txt{    height: 20px;
+    line-height: 20px;}
+</style>
+ </head>
+   <!--用户名片--> 
+   <div id="index-top_user-div"> 
+    <div id="index-top_user-div-info-head">
+      {% if current_user.is_authenticated %} 
+     <img src="http://picdns.niputv.com/{% if current_user.head == None %}ui/no_headimg.jpg{% else %}{{current_user.head}}{%endif%}" width="180px;" /> {% endif %} 
+    </div>
+    <div id="index-top_user-div-info-ur-io"> 
+     <span id="index-top_user-div-info-ur-io-ne">{{ current_user.username }}</span> 
+     <span id="index-top_user-div-info-ur-io-el">{{ current_user.user_email }}</span> 
+     <div>
+      <a href="http://creation.niputv.com/" target="_blank" class="index-top_user-div-info-ur-io-bt">创作空间</a> 
+      <a href="http://account.niputv.com/user/" target="_blank" class="index-top_user-div-info-ur-io-bt">我的账户</a> 
+     </div>
+     <a href="http://account.niputv.com/sign-in/logout"> 
+      <div id="index-top_user-div-info-ur-io-bt-lo-out"> 
+       <img src="http://picdns.niputv.com/ui/logouts.png" style="float:left;margin-right:5px;" />
+       <span>退出账户</span> 
+      </div> </a> 
+    </div> 
+   </div> 
+   <!--信息模块--> 
+   <div id="index-top_information-div" style="display: none;"> 
+    <div id="index-top_information-div_infowin"></div> 
+   </div>
+
+   <!--功能模块--> 
+   <div id="module-top-user-mod"> 
+    {% if current_user.is_authenticated %} 
+    <!--登录后--> 
+    <div> 
+     <img src="http://picdns.niputv.com/ui/header_msg.png" role="button" id="index-top-information_fun" class="hvr-grow" /> 
+    </div> 
+    <div id="index-top-user_head"> 
+     <img src="http://picdns.niputv.com/{% if current_user.head == None %}ui/no_headimg.jpg{% else %}{{current_user.head}}{%endif%}" width="100%" id="index-top_head-ui" role="button" class="hvr-grow" /> 
+    </div> {% else %} 
+    <!--登录前--> 
+    <div id="index-top_head-ui" style="display: none;"></div>
+    <div id="index-top-information_fun" style="display: none;"></div>
+    <a href="http://account.niputv.com/sign-in/" target="">
+     <div id="index-top_login-ui"> 
+      <img src="http://picdns.niputv.com/ui/login.png" id="index-top_login-ico" /> 
+      <span id="index-top-sing_in-txt">	登录</span> 
+     </div> </a> {% endif %} 
+   </div>
+   <script>
+       $("#index-top-user_head").click(function(){
+           $("#index-top_user-div").toggle()
+       })
+       $("#index-top-information_fun").click(function(){
+           $("#index-top_information-div").toggle()
+       })
+    </script>
+  <!--<script src="/static/js/main/module_top_user.js"></script>-->
